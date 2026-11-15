@@ -65,3 +65,9 @@ body.dash #page.leaving{opacity:0;transform:translateY(6px);transition:opacity .
 .stat-val{font-variant-numeric:tabular-nums}
 body.dash .toast-flash{animation:dIn .5s cubic-bezier(.22,1,.36,1) both}
 @media (prefers-reduced-motion:reduce){body.dash .in{animation:none;opacity:1;transform:none}body.dash .orb{animation:none}}
+
+/* patient hero button: solid white pill, always visible on the teal banner */
+body.dash main .hero-btn{background:#fff!important;color:#0f766e!important;box-shadow:0 10px 30px -8px rgba(255,255,255,.35),0 0 0 1px rgba(255,255,255,.6)!important;position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s}
+body.dash main .hero-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 14px 36px -8px rgba(45,212,191,.8)!important}
+body.dash main .hero-btn::after{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(20,184,166,.35),transparent);transform:skewX(-20deg);transition:left .7s}
+body.dash main .hero-btn:hover::after{left:130%}
