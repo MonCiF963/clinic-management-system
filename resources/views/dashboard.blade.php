@@ -6,12 +6,22 @@
 @php
     $user = auth()->user();
 
-    $cards = [
-        ['Patients', 'Coming soon'],
-        ['Appointments today', 'Coming soon'],
-        ['Doctors on duty', 'Coming soon'],
-        ['Revenue this month', 'Coming soon'],
-    ];
+    try {
+        $cards = [
+            ['Patients', number_format(\App\Models\Patient::count())],
+            ['Appointments today', number_format(\App\Models\Appointment::whereDate('start_at', today())->count())],
+            ['Doctors', number_format(\App\Models\Doctor::count())],
+            ['Revenue this month', number_format((float) \App\Models\Appointment::query()
+                ->join('services', 'services.id', '=', 'appointments.service_id')
+                ->where('appointments.status', 'completed')
+                ->whereMonth('appointments.start_at', now()->month)
+                ->whereYear('appointments.start_at', now()->year)
+                ->sum('services.price'), 2).' DA'],
+        ];
+    } catch (\Throwable $e) {
+        report($e);
+        $cards = [['Patients', '-'], ['Appointments today', '-'], ['Doctors', '-'], ['Revenue this month', '-']];
+    }
 
     $todo = match ($user->role) {
         'admin' => ['Manage doctors and staff accounts', 'View reports and revenue', 'Oversee patients and billing'],
@@ -32,7 +42,7 @@
     @foreach ($cards as [$label, $value])
         <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
             <p class="text-sm font-medium text-slate-500">{{ $label }}</p>
-            <p class="mt-3 text-lg font-semibold text-slate-400">{{ $value }}</p>
+            <p class="mt-3 text-3xl font-bold text-slate-800">{{ $value }}</p>
         </div>
     @endforeach
 </div>
