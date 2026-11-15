@@ -78,14 +78,28 @@
 
             <p class="mt-6 max-w-xl text-lg leading-8 text-slate-600">
                 Experienced doctors, modern facilities and a caring team, all in one place.
-                Book your appointment online in less than a minute.
+                Sign in to book your appointment online in less than a minute.
             </p>
 
             <div class="mt-9 flex flex-col gap-3 sm:flex-row">
-                <a href="#contact"
-                   class="inline-flex items-center justify-center rounded-full bg-brand-600 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-brand-600/30 transition hover:-translate-y-0.5 hover:bg-brand-700">
-                    Book an appointment
-                </a>
+                @auth
+                    @if (auth()->user()->hasRole('patient'))
+                        <a href="{{ route('appointments.create') }}"
+                           class="btn-shine inline-flex items-center justify-center rounded-full bg-brand-600 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-brand-600/30 transition hover:-translate-y-0.5 hover:bg-brand-700">
+                            Book an appointment
+                        </a>
+                    @else
+                        <a href="{{ route('dashboard') }}"
+                           class="btn-shine inline-flex items-center justify-center rounded-full bg-brand-600 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-brand-600/30 transition hover:-translate-y-0.5 hover:bg-brand-700">
+                            Go to dashboard
+                        </a>
+                    @endif
+                @else
+                    <a href="{{ route('login') }}"
+                       class="btn-shine inline-flex items-center justify-center rounded-full bg-brand-600 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-brand-600/30 transition hover:-translate-y-0.5 hover:bg-brand-700">
+                        Sign in
+                    </a>
+                @endauth
                 <a href="#services"
                    class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-7 py-3.5 text-base font-semibold text-slate-800 transition hover:border-brand-400 hover:text-brand-700">
                     Explore services
@@ -252,7 +266,11 @@
                     <div class="p-6">
                         <h3 class="font-semibold text-slate-900">{{ $name }}</h3>
                         <p class="mt-1 text-sm text-brand-600">{{ $specialty }}</p>
-                        <a href="#contact" class="mt-4 inline-block text-sm font-semibold text-slate-700 hover:text-brand-600">Book a visit →</a>
+                        @auth
+                            @if (auth()->user()->hasRole('patient'))
+                                <a href="{{ route('appointments.create') }}" class="mt-4 inline-block text-sm font-semibold text-slate-700 hover:text-brand-600">Book a visit →</a>
+                            @endif
+                        @endauth
                     </div>
                 </article>
             @endforeach
@@ -286,14 +304,18 @@
     </div>
 </section>
 
-{{-- ============ CONTACT / APPOINTMENT ============ --}}
+{{-- ============ CONTACT ============ --}}
 <section id="contact" class="scroll-mt-20 py-20 sm:py-28">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="reveal grid overflow-hidden rounded-3xl bg-linear-to-br from-brand-600 to-brand-800 shadow-2xl shadow-brand-900/20 lg:grid-cols-2">
+        <div class="reveal grid overflow-hidden rounded-3xl bg-linear-to-br from-brand-600 to-brand-800 shadow-2xl shadow-brand-900/20 {{ auth()->check() && auth()->user()->hasRole('patient') ? 'lg:grid-cols-2' : '' }}">
 
             <div class="p-8 text-white sm:p-12">
-                <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Book your appointment today</h2>
-                <p class="mt-4 text-lg text-brand-100">Fill in the form and our team will contact you shortly to confirm your visit.</p>
+                <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
+                    {{ auth()->check() && auth()->user()->hasRole('patient') ? 'Book your appointment today' : 'Get in touch' }}
+                </h2>
+                <p class="mt-4 text-lg text-brand-100">
+                    {{ auth()->check() && auth()->user()->hasRole('patient') ? 'Pick a doctor and a free time. Our team will confirm your visit shortly.' : 'Call us or visit the clinic. Existing patients can sign in to manage their appointments.' }}
+                </p>
 
                 <ul class="mt-8 space-y-4 text-brand-50">
                     <li class="flex items-center gap-3">
@@ -307,31 +329,15 @@
                 </ul>
             </div>
 
-            {{-- UI only for now: we will connect it to the database in the appointments step --}}
-            <form class="space-y-4 bg-white p-8 sm:p-12" onsubmit="return false;">
-                <div class="grid gap-4 sm:grid-cols-2">
-                    <input type="text" placeholder="Full name" required
-                           class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-hidden focus:border-brand-500 focus:ring-2 focus:ring-brand-200">
-                    <input type="tel" placeholder="Phone number" required
-                           class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-hidden focus:border-brand-500 focus:ring-2 focus:ring-brand-200">
-                </div>
-                <div class="grid gap-4 sm:grid-cols-2">
-                    <select class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-hidden focus:border-brand-500 focus:ring-2 focus:ring-brand-200">
-                        <option>General Consultation</option>
-                        <option>Cardiology</option>
-                        <option>Pediatrics</option>
-                        <option>Internal Medicine</option>
-                    </select>
-                    <input type="date"
-                           class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-hidden focus:border-brand-500 focus:ring-2 focus:ring-brand-200">
-                </div>
-                <textarea rows="4" placeholder="Tell us briefly how we can help (optional)"
-                          class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-hidden focus:border-brand-500 focus:ring-2 focus:ring-brand-200"></textarea>
-                <button type="submit"
-                        class="w-full rounded-xl bg-brand-600 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition hover:bg-brand-700">
-                    Request appointment
-                </button>
-            </form>
+            @auth
+                @if (auth()->user()->hasRole('patient'))
+                    <div class="flex flex-col justify-center gap-5 bg-white p-8 sm:p-12">
+                        <h3 class="text-xl font-bold text-slate-900">Ready when you are</h3>
+                        <p class="text-slate-600">Choose a service, a doctor and a free time. It takes less than a minute.</p>
+                        <a href="{{ route('appointments.create') }}" class="btn-shine rounded-xl bg-brand-600 py-3.5 text-center text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition hover:bg-brand-700">Book an appointment</a>
+                    </div>
+                @endif
+            @endauth
         </div>
     </div>
 </section>

@@ -9,13 +9,30 @@
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/dash.css') }}?v={{ filemtime(public_path('css/dash.css')) }}">
+    <script src="{{ asset('js/dash.js') }}?v={{ filemtime(public_path('js/dash.js')) }}" defer></script>
 </head>
-<body class="bg-slate-100 font-sans text-slate-600 antialiased">
+<body class="dash font-sans antialiased">
+<div id="dash-progress"></div>
+<canvas id="hexbg"></canvas>
+<div class="orb o1"></div><div class="orb o2"></div><div class="spot"></div>
 
 @php
     $user = auth()->user();
     $all = ['admin', 'doctor', 'receptionist', 'patient'];
     $staff = ['admin', 'doctor', 'receptionist'];
+
+    $icons = [
+        'Dashboard' => '<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>',
+        'Book appointment' => '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M12 14v4M10 16h4"/>',
+        'Appointments' => '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/>',
+        'Doctors' => '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+        'Services' => '<path d="M12 3v18M3 12h18"/>',
+        'Specialties' => '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+        'Patients' => '<circle cx="9" cy="8" r="3.5"/><path d="M2 20a7 7 0 0 1 14 0M17 4a3.5 3.5 0 0 1 0 7M22 20a7 7 0 0 0-4-6"/>',
+        'Billing' => '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>',
+        'Reports' => '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+    ];
 
     // [label, url, allowed roles, is the page built yet?]
     $nav = [
@@ -31,10 +48,10 @@
     ];
 @endphp
 
-<div class="flex min-h-screen">
+<div class="shell flex min-h-screen">
 
     {{-- Sidebar --}}
-    <aside class="hidden w-64 shrink-0 flex-col bg-slate-900 lg:flex">
+    <aside class="hidden w-64 shrink-0 flex-col lg:flex">
         <a href="{{ route('home') }}" class="flex h-16 items-center gap-2.5 px-6">
             <span class="flex size-9 items-center justify-center rounded-xl bg-brand-600 text-white">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="size-5"><path d="M12 5v14M5 12h14" /></svg>
@@ -47,8 +64,12 @@
                 @if ($user->hasRole(...$roles))
                     @php $active = $ready && (request()->url() === $url || str_starts_with(request()->url(), $url.'/')); @endphp
                     <a href="{{ $ready ? $url : '#' }}"
-                       class="flex items-center justify-between rounded-lg px-3 py-2.5 transition {{ $active ? 'bg-brand-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }} {{ $ready ? '' : 'cursor-not-allowed opacity-60' }}">
-                        {{ $label }}
+                       @if ($ready) data-nav @endif
+                       class="flex items-center justify-between gap-3 px-3 py-2.5 {{ $active ? 'on' : '' }} {{ $ready ? '' : 'cursor-not-allowed opacity-60' }}">
+                        <span class="flex items-center gap-3">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{!! $icons[$label] ?? '' !!}</svg>
+                            {{ $label }}
+                        </span>
                         @unless ($ready)
                             <span class="rounded-full bg-slate-700 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-300">Soon</span>
                         @endunless
@@ -70,11 +91,11 @@
 
     <div class="flex min-w-0 flex-1 flex-col">
         {{-- Top bar --}}
-        <header class="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-8">
-            <h1 class="text-lg font-semibold text-slate-900">@yield('title', 'Dashboard')</h1>
+        <header class="top flex h-16 items-center justify-between border-b px-4 sm:px-8">
+            <h1 id="page-title" class="text-lg font-semibold">@yield('title', 'Dashboard')</h1>
 
             <div class="flex items-center gap-2 sm:gap-4">
-                <a href="{{ route('home') }}" class="text-sm font-medium text-slate-600 hover:text-brand-600">View website</a>
+                <a href="{{ route('home') }}" data-full class="text-sm font-medium">View website</a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-red-300 hover:text-red-600">
@@ -85,15 +106,15 @@
         </header>
 
         {{-- Mobile menu --}}
-        <nav class="flex gap-2 overflow-x-auto border-b border-slate-200 bg-white px-4 py-2 text-sm font-medium lg:hidden">
+        <nav class="mnav flex gap-2 overflow-x-auto border-b px-4 py-2 text-sm font-medium lg:hidden">
             @foreach ($nav as [$label, $url, $roles, $ready])
                 @if ($ready && $user->hasRole(...$roles))
-                    <a href="{{ $url }}" class="shrink-0 rounded-full px-3.5 py-1.5 {{ request()->url() === $url ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-700' }}">{{ $label }}</a>
+                    <a href="{{ $url }}" data-nav class="shrink-0 rounded-full px-3.5 py-1.5 {{ request()->url() === $url ? 'on' : '' }}">{{ $label }}</a>
                 @endif
             @endforeach
         </nav>
 
-        <main class="flex-1 p-4 sm:p-8">
+        <main id="page" class="flex-1 p-4 sm:p-8">
             @include('partials.flash')
             @yield('content')
         </main>

@@ -1,4 +1,4 @@
-<header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-lg">
+<header id="site-header" class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-lg">
     <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
         {{-- Logo --}}
@@ -28,10 +28,14 @@
                 <a href="{{ route('register') }}" class="px-3 py-2 text-sm font-semibold text-slate-700 transition hover:text-brand-600">Sign up</a>
             @endauth
 
-            <a href="{{ auth()->check() && auth()->user()->hasRole('patient') ? route('appointments.create') : route('register') }}"
-               class="rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition hover:bg-brand-700">
-                Book appointment
-            </a>
+            @auth
+                @if (auth()->user()->hasRole('patient'))
+                    <a href="{{ route('appointments.create') }}"
+                       class="btn-shine rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition hover:bg-brand-700">
+                        Book appointment
+                    </a>
+                @endif
+            @endauth
         </div>
 
         {{-- Mobile button --}}
@@ -59,10 +63,14 @@
                 <a href="{{ route('register') }}" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50">Sign up</a>
             @endauth
 
-            <a href="{{ auth()->check() && auth()->user()->hasRole('patient') ? route('appointments.create') : route('register') }}"
-               class="mt-3 block rounded-full bg-brand-600 px-5 py-3 text-center font-semibold text-white">
-                Book appointment
-            </a>
+            @auth
+                @if (auth()->user()->hasRole('patient'))
+                    <a href="{{ route('appointments.create') }}"
+                       class="mt-3 block rounded-full bg-brand-600 px-5 py-3 text-center font-semibold text-white">
+                        Book appointment
+                    </a>
+                @endif
+            @endauth
         </div>
     </div>
 </header>
