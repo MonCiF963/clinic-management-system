@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Staff login – {{ config('app.name') }}</title>
+    <title>Sign in – {{ config('app.name') }}</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet">
@@ -44,7 +44,7 @@
             </a>
 
             <h2 class="text-3xl font-bold tracking-tight text-slate-900">Welcome back</h2>
-            <p class="mt-2 text-slate-600">Sign in to access the clinic dashboard.</p>
+            <p class="mt-2 text-slate-600">Sign in to book appointments or manage the clinic.</p>
 
             <form method="POST" action="{{ url('/login') }}" class="mt-8 space-y-5 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-8">
                 @csrf
@@ -78,7 +78,9 @@
                 </button>
             </form>
 
-            <p class="mt-6 text-center text-sm">
+            <p class="mt-6 text-center text-sm text-slate-600">New patient? <a href="{{ route('register') }}" class="font-semibold text-brand-700 hover:text-brand-600">Create an account</a></p>
+
+            <p class="mt-3 text-center text-sm">
                 <a href="{{ route('home') }}" class="font-medium text-brand-700 hover:text-brand-600">← Back to website</a>
             </p>
         </div>

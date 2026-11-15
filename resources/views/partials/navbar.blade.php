@@ -24,10 +24,11 @@
             @auth
                 <a href="{{ route('dashboard') }}" class="px-3 py-2 text-sm font-semibold text-slate-700 transition hover:text-brand-600">Dashboard</a>
             @else
-                <a href="{{ route('login') }}" class="px-3 py-2 text-sm font-semibold text-slate-700 transition hover:text-brand-600">Staff login</a>
+                <a href="{{ route('login') }}" class="px-3 py-2 text-sm font-semibold text-slate-700 transition hover:text-brand-600">Sign in</a>
+                <a href="{{ route('register') }}" class="px-3 py-2 text-sm font-semibold text-slate-700 transition hover:text-brand-600">Sign up</a>
             @endauth
 
-            <a href="{{ url('/') }}#contact"
+            <a href="{{ auth()->check() && auth()->user()->hasRole('patient') ? route('appointments.create') : route('register') }}"
                class="rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition hover:bg-brand-700">
                 Book appointment
             </a>
@@ -54,10 +55,11 @@
             @auth
                 <a href="{{ route('dashboard') }}" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50">Dashboard</a>
             @else
-                <a href="{{ route('login') }}" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50">Staff login</a>
+                <a href="{{ route('login') }}" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50">Sign in</a>
+                <a href="{{ route('register') }}" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50">Sign up</a>
             @endauth
 
-            <a href="{{ url('/') }}#contact"
+            <a href="{{ auth()->check() && auth()->user()->hasRole('patient') ? route('appointments.create') : route('register') }}"
                class="mt-3 block rounded-full bg-brand-600 px-5 py-3 text-center font-semibold text-white">
                 Book appointment
             </a>

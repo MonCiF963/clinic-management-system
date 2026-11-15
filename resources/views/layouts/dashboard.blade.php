@@ -14,14 +14,18 @@
 
 @php
     $user = auth()->user();
-    $all = ['admin', 'doctor', 'receptionist'];
+    $all = ['admin', 'doctor', 'receptionist', 'patient'];
+    $staff = ['admin', 'doctor', 'receptionist'];
 
     // [label, url, allowed roles, is the page built yet?]
     $nav = [
         ['Dashboard', route('dashboard'), $all, true],
-        ['Patients', '#', $all, false],
-        ['Appointments', '#', $all, false],
-        ['Doctors & staff', '#', ['admin'], false],
+        ['Book appointment', route('appointments.create'), ['patient'], true],
+        ['Appointments', route('appointments.index'), $all, true],
+        ['Doctors', route('admin.doctors.index'), ['admin'], true],
+        ['Services', route('admin.services.index'), ['admin'], true],
+        ['Specialties', route('admin.specialties.index'), ['admin'], true],
+        ['Patients', '#', ['admin', 'receptionist'], false],
         ['Billing', '#', ['admin', 'receptionist'], false],
         ['Reports', '#', ['admin'], false],
     ];
@@ -41,7 +45,7 @@
         <nav class="mt-4 flex-1 space-y-1 px-3 text-sm font-medium">
             @foreach ($nav as [$label, $url, $roles, $ready])
                 @if ($user->hasRole(...$roles))
-                    @php $active = $ready && request()->url() === $url; @endphp
+                    @php $active = $ready && (request()->url() === $url || str_starts_with(request()->url(), $url.'/')); @endphp
                     <a href="{{ $ready ? $url : '#' }}"
                        class="flex items-center justify-between rounded-lg px-3 py-2.5 transition {{ $active ? 'bg-brand-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }} {{ $ready ? '' : 'cursor-not-allowed opacity-60' }}">
                         {{ $label }}
@@ -80,7 +84,17 @@
             </div>
         </header>
 
+        {{-- Mobile menu --}}
+        <nav class="flex gap-2 overflow-x-auto border-b border-slate-200 bg-white px-4 py-2 text-sm font-medium lg:hidden">
+            @foreach ($nav as [$label, $url, $roles, $ready])
+                @if ($ready && $user->hasRole(...$roles))
+                    <a href="{{ $url }}" class="shrink-0 rounded-full px-3.5 py-1.5 {{ request()->url() === $url ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-700' }}">{{ $label }}</a>
+                @endif
+            @endforeach
+        </nav>
+
         <main class="flex-1 p-4 sm:p-8">
+            @include('partials.flash')
             @yield('content')
         </main>
     </div>
