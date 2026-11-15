@@ -56,7 +56,7 @@
         You are signed in as <span class="font-semibold text-white">{{ $user->roleLabel() }}</span>.
     </p>
     @if ($isPatient)
-        <a href="{{ route('appointments.create') }}" class="mt-6 inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-700 shadow-lg transition hover:bg-brand-50">Book an appointment</a>
+        <a href="{{ route('appointments.create') }}" class="hero-btn btn-shine mt-6 inline-flex rounded-full px-6 py-3 text-sm font-semibold">Book an appointment</a>
     @endif
 </div>
 

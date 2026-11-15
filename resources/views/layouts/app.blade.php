@@ -12,7 +12,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/site.css') }}?v={{ filemtime(public_path('css/site.css')) }}">
 </head>
-<body class="bg-white font-sans text-slate-600 antialiased">
+<body class="sd bg-white font-sans text-slate-600 antialiased">
+    <div class="orb o1"></div><div class="orb o2"></div>
 
     @include('partials.navbar')
 
