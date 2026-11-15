@@ -64,7 +64,7 @@
     @foreach ($cards as [$label, $value])
         <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
             <p class="text-sm font-medium text-slate-500">{{ $label }}</p>
-            <p class="mt-3 text-3xl font-bold text-slate-800">{{ $value }}</p>
+            <p class="stat-val mt-3 text-3xl font-bold text-slate-800">{{ $value }}</p>
         </div>
     @endforeach
 </div>

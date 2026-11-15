@@ -1,0 +1,35 @@
+/* Public site polish: smooth entrances, hover effects, glow. Plain CSS, no build needed. */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  body { animation: pageIn .55s cubic-bezier(.22,1,.36,1) both; }
+  @keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  /* staggered reveal: JS sets --d per element inside a group */
+  .reveal { transition-delay: var(--d, 0ms) !important; }
+  .reveal.is-visible { transition-duration: .8s !important; transition-timing-function: cubic-bezier(.22,1,.36,1) !important; }
+
+  /* hero entrance */
+  .hero-in { opacity: 0; transform: translateY(26px); animation: heroIn .9s cubic-bezier(.22,1,.36,1) forwards; animation-delay: var(--d, 0ms); }
+  @keyframes heroIn { to { opacity: 1; transform: none; } }
+
+  /* soft floating glow blobs behind the hero */
+  .blob-float { animation: blobFloat 12s ease-in-out infinite alternate; }
+  @keyframes blobFloat { to { transform: translate3d(36px, 48px, 0) scale(1.12); } }
+
+  /* shine sweep on primary buttons */
+  .btn-shine { position: relative; overflow: hidden; }
+  .btn-shine::after { content: ""; position: absolute; top: 0; left: -70%; width: 45%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.45), transparent); transform: skewX(-20deg); transition: left .7s cubic-bezier(.22,1,.36,1); pointer-events: none; }
+  .btn-shine:hover::after { left: 130%; }
+
+  /* cards: lift + cursor-following light, like the OneCode+ site */
+  article.reveal, figure.reveal { position: relative; overflow: hidden; transition: transform .45s cubic-bezier(.22,1,.36,1), box-shadow .45s, border-color .3s, opacity .8s, background .3s; }
+  article.reveal::before, figure.reveal::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .35s; background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgba(45,212,191,.22), transparent 62%); }
+  article.reveal:hover::before, figure.reveal:hover::before { opacity: 1; }
+}
+
+/* header gets a soft shadow once the page scrolls */
+#site-header { transition: box-shadow .3s, background-color .3s; }
+#site-header.scrolled { box-shadow: 0 10px 30px -12px rgba(15, 118, 110, .25); background-color: rgba(255,255,255,.92); }
+
+/* thin progress bar on top while a page loads */
+#topbar-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 100; background: linear-gradient(90deg, #14b8a6, #5eead4); box-shadow: 0 0 12px #2dd4bf; transition: width .3s ease, opacity .3s; pointer-events: none; }

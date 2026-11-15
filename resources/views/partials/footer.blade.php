@@ -22,7 +22,12 @@
                     <li><a href="{{ url('/') }}#services" class="hover:text-white">Services</a></li>
                     <li><a href="{{ url('/') }}#doctors" class="hover:text-white">Our doctors</a></li>
                     <li><a href="{{ url('/') }}#reviews" class="hover:text-white">Reviews</a></li>
-                    <li><a href="{{ url('/') }}#contact" class="hover:text-white">Book appointment</a></li>
+                    @auth
+                        @if (auth()->user()->hasRole('patient'))
+                            <li><a href="{{ route('appointments.create') }}" class="hover:text-white">Book appointment</a></li>
+                        @endif
+                    @endauth
+                    <li><a href="{{ url('/') }}#contact" class="hover:text-white">Contact</a></li>
                 </ul>
             </div>
 

@@ -10,6 +10,7 @@
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/site.css') }}?v={{ filemtime(public_path('css/site.css')) }}">
 </head>
 <body class="bg-white font-sans text-slate-600 antialiased">
 
@@ -21,5 +22,6 @@
 
     @include('partials.footer')
 
+    <script src="{{ asset('js/site.js') }}?v={{ filemtime(public_path('js/site.js')) }}" defer></script>
 </body>
 </html>

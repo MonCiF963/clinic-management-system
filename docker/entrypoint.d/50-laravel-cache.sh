@@ -15,6 +15,7 @@ fi
 
 php artisan config:cache || echo "config:cache skipped"
 php artisan view:cache   || echo "view:cache skipped"
+php artisan route:cache  || echo "route:cache skipped"
 
 # Create the first admin from ADMIN_EMAIL / ADMIN_PASSWORD (no-op if not set or already there)
 php artisan clinic:ensure-admin || echo "clinic:ensure-admin skipped"

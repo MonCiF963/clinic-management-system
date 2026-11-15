@@ -20,7 +20,7 @@
 
 <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
     <form method="GET" class="flex items-center gap-2">
-        <select name="status" onchange="this.form.submit()" class="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm">
+        <select name="status" onchange="this.form.requestSubmit()" class="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm">
             <option value="">All statuses</option>
             @foreach ($statuses as $s)
                 <option value="{{ $s }}" @selected(request('status') === $s)>{{ ucfirst(str_replace('_', ' ', $s)) }}</option>
