@@ -14,26 +14,23 @@
                     <p class="text-2xl font-bold">+000 000 000 000</p>
                 </div>
 
-                <form action="#" method="get" class="grid gap-4 rounded-3xl bg-white p-6 shadow-2xl sm:grid-cols-2 sm:p-8">
-                    <input type="text" placeholder="Full name" required
-                           class="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20">
-                    <input type="tel" placeholder="Phone number" required
-                           class="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20">
-                    <select class="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20">
-                        <option>General Checkup</option>
-                        <option>Cardiology</option>
-                        <option>Pediatrics</option>
-                        <option>Dermatology</option>
-                    </select>
-                    <input type="date" required
-                           class="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20">
-                    <textarea rows="3" placeholder="Tell us briefly how we can help (optional)"
-                              class="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 sm:col-span-2"></textarea>
-                    <button type="submit"
-                            class="rounded-xl bg-brand-600 px-6 py-3.5 font-semibold text-white transition hover:bg-brand-700 sm:col-span-2">
-                        Request Appointment
-                    </button>
-                </form>
+                <div class="grid gap-4 rounded-3xl bg-white p-6 text-slate-700 shadow-2xl sm:p-8">
+                    <h3 class="text-xl font-bold text-slate-900">Book online in 3 steps</h3>
+                    <ol class="list-decimal space-y-2 pl-5 text-sm">
+                        <li>Create your free account.</li>
+                        <li>Choose a service, a doctor and a day.</li>
+                        <li>Pick a free time. We confirm your visit.</li>
+                    </ol>
+                    @auth
+                        <a href="{{ auth()->user()->hasRole('patient') ? route('appointments.create') : route('dashboard') }}"
+                           class="rounded-xl bg-brand-600 px-6 py-3.5 text-center font-semibold text-white transition hover:bg-brand-700">
+                            {{ auth()->user()->hasRole('patient') ? 'Book an appointment' : 'Go to dashboard' }}
+                        </a>
+                    @else
+                        <a href="{{ route('register') }}" class="rounded-xl bg-brand-600 px-6 py-3.5 text-center font-semibold text-white transition hover:bg-brand-700">Create an account</a>
+                        <a href="{{ route('login') }}" class="rounded-xl border border-slate-300 px-6 py-3.5 text-center font-semibold text-slate-700 transition hover:border-brand-600 hover:text-brand-700">I already have an account</a>
+                    @endauth
+                </div>
             </div>
         </div>
     </div>

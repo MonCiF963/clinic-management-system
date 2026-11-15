@@ -17,6 +17,8 @@ class LoginController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $request->merge(['email' => mb_strtolower(trim((string) $request->input('email')))]);
+
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -24,6 +26,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
+            \App\Models\AuditLog::record('login');
 
             return redirect()->intended(route('dashboard'));
         }
