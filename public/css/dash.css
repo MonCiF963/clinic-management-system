@@ -74,3 +74,12 @@ body.dash main .hero-btn:hover::after{left:130%}
 
 body.dash main .bg-amber-50{background:rgba(245,158,11,.12)!important;border:1px solid rgba(245,158,11,.4);color:#fcd34d!important}
 body.dash main .text-amber-800,body.dash main .text-amber-700{color:#fcd34d!important}
+
+/* instant click feedback */
+body.dash #page{transition:opacity .15s}
+body.dash #page.busy{opacity:.55;pointer-events:none}
+body.dash aside nav a,body.dash .mnav a,body.dash main a,body.dash main button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+body.dash main a:active,body.dash main button:active,body.dash aside nav a:active{transform:scale(.96)!important;transition:transform .08s!important}
+body.dash .btn-busy{position:relative;color:transparent!important}
+body.dash .btn-busy::after{content:"";position:absolute;inset:0;margin:auto;width:16px;height:16px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
