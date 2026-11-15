@@ -90,7 +90,7 @@
   const warm = (e) => { const a = e.target.closest && e.target.closest('a[href]'); if (a && local(a) && a.pathname !== '/' && a.href !== location.href) get(a.href).catch(() => cache.delete(a.href)); };
   document.addEventListener('pointerdown', warm, { passive: true });
   document.addEventListener('pointerover', warm, { passive: true });
-  (window.requestIdleCallback || setTimeout)(() => $$('[data-nav]').forEach((a) => { if (a.href !== location.href) get(a.href).catch(() => cache.delete(a.href)); }), 300);
+  setTimeout(() => $$('[data-nav]').forEach((a) => { if (a.href !== location.href) get(a.href).catch(() => cache.delete(a.href)); }), 400);
   document.addEventListener('touchstart', warm, { passive: true });
 
   document.addEventListener('submit', async (e) => {
