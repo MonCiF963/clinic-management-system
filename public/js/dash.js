@@ -54,7 +54,7 @@
   const prog = (on) => { clearTimeout(barT); if (on) { bar.style.opacity = 1; bar.style.width = '70%'; } else { bar.style.width = '100%'; barT = setTimeout(() => { bar.style.opacity = 0; bar.style.width = 0; }, 250); } };
   const cache = new Map(); // url -> Promise<string>, short-lived prefetch cache
   const get = (url) => {
-    if (!cache.has(url)) { cache.set(url, fetch(url, { headers: { 'X-Requested-With': 'fetch' }, credentials: 'same-origin' }).then((r) => r.ok || r.status === 422 ? r.text().then((t) => ({ t, url: r.url })) : Promise.reject(r))); setTimeout(() => cache.delete(url), 8000); }
+    if (!cache.has(url)) { cache.set(url, fetch(url, { headers: { 'X-Requested-With': 'fetch' }, credentials: 'same-origin' }).then((r) => r.ok || r.status === 422 ? r.text().then((t) => ({ t, url: r.url })) : Promise.reject(r))); setTimeout(() => cache.delete(url), 30000); }
     return cache.get(url);
   };
   const setActive = () => {
@@ -64,16 +64,20 @@
   const swap = (html, finalUrl, push) => {
     const doc = new DOMParser().parseFromString(html, 'text/html'), next = $('#page', doc);
     if (!next || !doc.body.classList.contains('dash')) { location.href = finalUrl; return; }
-    const page = $('#page'); page.classList.add('leaving');
+    const page = $('#page');
     setTimeout(() => {
-      page.innerHTML = next.innerHTML; page.classList.remove('leaving');
+      page.innerHTML = next.innerHTML; page.classList.remove('leaving', 'busy');
       document.title = doc.title; const t = $('#page-title'), nt = $('#page-title', doc); if (t && nt) t.textContent = nt.textContent;
       if (push) history.pushState({ p: 1 }, '', finalUrl);
       scrollTo(0, 0); setActive(); enhance(); prog(false);
-    }, reduce ? 0 : 120);
+    }, 0);
   };
   const go = (url, push = true) => {
     prog(true);
+    // instant feedback: highlight the clicked item and dim the page right away
+    const u = new URL(url, location.href).pathname;
+    $$('[data-nav]').forEach((a) => a.classList.toggle('on', new URL(a.href).pathname === u));
+    const page = $('#page'); if (page) page.classList.add('busy');
     get(url).then(({ t, url: fu }) => swap(t, fu, push)).catch(() => { location.href = url; });
   };
   const local = (a) => a.origin === location.origin && !a.target && !a.hasAttribute('download') && !a.hasAttribute('data-full') && !a.getAttribute('href').startsWith('#');
@@ -84,13 +88,15 @@
     e.preventDefault(); go(a.href);
   });
   const warm = (e) => { const a = e.target.closest && e.target.closest('a[href]'); if (a && local(a) && a.pathname !== '/' && a.href !== location.href) get(a.href).catch(() => cache.delete(a.href)); };
+  document.addEventListener('pointerdown', warm, { passive: true });
   document.addEventListener('pointerover', warm, { passive: true });
+  (window.requestIdleCallback || setTimeout)(() => $$('[data-nav]').forEach((a) => { if (a.href !== location.href) get(a.href).catch(() => cache.delete(a.href)); }), 300);
   document.addEventListener('touchstart', warm, { passive: true });
 
   document.addEventListener('submit', async (e) => {
     const f = e.target; if (f.hasAttribute('data-full') || f.action.endsWith('/logout') || !$('#page')) return;
     e.preventDefault(); prog(true);
-    const btn = f.querySelector('[type=submit]'); if (btn) btn.disabled = true;
+    const btn = f.querySelector('[type=submit]'); if (btn) { btn.disabled = true; btn.classList.add('btn-busy'); } $('#page').classList.add('busy');
     try {
       const method = (f.method || 'get').toUpperCase(), body = new FormData(f);
       let url = f.action, opt = { credentials: 'same-origin', headers: { 'X-Requested-With': 'fetch' } };
