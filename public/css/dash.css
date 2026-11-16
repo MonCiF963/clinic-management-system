@@ -1,36 +1,34 @@
 /* Dashboard theme: dark glass, teal glow, spotlight. Unlayered, so it overrides Tailwind utilities. */
 body.dash{--bg:#06100f;--glass:rgba(255,255,255,.045);--line:rgba(255,255,255,.09);--tx:#e6f4f1;--mut:#8fa9a4;--ac:#2dd4bf;
   background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden}
-body.dash #hexbg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55}
-body.dash .orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;animation:orbDrift 16s ease-in-out infinite alternate}
-body.dash .orb.o1{width:420px;height:420px;background:rgba(20,184,166,.28);top:-120px;left:-80px}
-body.dash .orb.o2{width:360px;height:360px;background:rgba(56,189,248,.18);bottom:-120px;right:-60px;animation-delay:-6s}
-@keyframes orbDrift{to{transform:translate3d(60px,50px,0) scale(1.15)}}
-body.dash .spot{position:fixed;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;z-index:0;
-  background:radial-gradient(circle,rgba(45,212,191,.12),transparent 65%);left:var(--sx,50%);top:var(--sy,30%);transition:opacity .3s}
+body.dash #hexbg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.7}
+body.dash .orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0}
+body.dash .orb.o1{width:700px;height:700px;top:-300px;left:-250px;background:radial-gradient(circle,rgba(20,184,166,.22),transparent 68%)}
+body.dash .orb.o2{width:640px;height:640px;bottom:-280px;right:-220px;background:radial-gradient(circle,rgba(56,189,248,.14),transparent 68%)}
+body.dash .spot{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;z-index:0;will-change:transform;background:radial-gradient(circle,rgba(45,212,191,.10),transparent 65%)}
 #dash-progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:200;background:linear-gradient(90deg,#14b8a6,#7dd3fc);box-shadow:0 0 14px #2dd4bf;opacity:0;transition:width .35s ease,opacity .3s;pointer-events:none}
 body.dash .shell{position:relative;z-index:1}
 
 /* sidebar + header */
-body.dash aside{background:rgba(6,16,15,.72)!important;backdrop-filter:blur(18px);border-right:1px solid var(--line)}
+body.dash aside{background:rgba(6,16,15,.94)!important;border-right:1px solid var(--line)}
 body.dash aside nav a{position:relative;color:var(--mut)!important;background:transparent!important;border-radius:12px;transition:color .25s,background .25s,transform .25s}
 body.dash aside nav a:hover{color:#fff!important;background:var(--glass)!important;transform:translateX(3px)}
 body.dash aside nav a.on{color:#fff!important;background:linear-gradient(90deg,rgba(45,212,191,.22),rgba(45,212,191,.04))!important;box-shadow:inset 0 0 0 1px rgba(45,212,191,.35),0 0 24px -8px rgba(45,212,191,.6)}
 body.dash aside nav a.on::before{content:"";position:absolute;left:-12px;top:20%;height:60%;width:3px;border-radius:3px;background:var(--ac);box-shadow:0 0 12px var(--ac)}
 body.dash aside nav svg{width:18px;height:18px;flex:none}
-body.dash header.top{background:rgba(6,16,15,.6)!important;backdrop-filter:blur(18px);border-color:var(--line)!important;position:sticky;top:0;z-index:20}
+body.dash header.top{background:rgba(6,16,15,.94)!important;border-color:var(--line)!important;position:sticky;top:0;z-index:20}
 body.dash header.top h1{color:#fff!important}
 body.dash header.top a{color:var(--mut)!important}
 body.dash header.top a:hover{color:var(--ac)!important}
 body.dash header.top button{background:var(--glass);border-color:var(--line)!important;color:var(--tx)!important}
 body.dash header.top button:hover{border-color:#f87171!important;color:#fca5a5!important;box-shadow:0 0 18px -4px rgba(248,113,113,.5)}
-body.dash .mnav{background:rgba(6,16,15,.7)!important;border-color:var(--line)!important;backdrop-filter:blur(14px)}
+body.dash .mnav{background:rgba(6,16,15,.94)!important;border-color:var(--line)!important}
 body.dash .mnav a{background:var(--glass)!important;color:var(--mut)!important;border:1px solid var(--line)}
 body.dash .mnav a.on{background:rgba(45,212,191,.2)!important;color:#fff!important;border-color:rgba(45,212,191,.5)}
 
 /* page content: remap the light utilities to glass */
 body.dash main{color:var(--tx)}
-body.dash main .bg-white,body.dash main .bg-slate-50,body.dash main .bg-slate-100{background:var(--glass)!important;border-color:var(--line)!important;backdrop-filter:blur(14px)}
+body.dash main .bg-white,body.dash main .bg-slate-50,body.dash main .bg-slate-100{background:rgba(14,28,26,.82)!important;border-color:var(--line)!important}
 body.dash main [class*="border-slate"],body.dash main .divide-y>*,body.dash main table,body.dash main tr,body.dash main td,body.dash main th{border-color:var(--line)!important}
 body.dash main .text-slate-900,body.dash main .text-slate-800,body.dash main .text-slate-700{color:#f1faf8!important}
 body.dash main .text-slate-600,body.dash main .text-slate-500,body.dash main .text-slate-400{color:var(--mut)!important}
@@ -39,7 +37,7 @@ body.dash main input,body.dash main select,body.dash main textarea{background:rg
 body.dash main input:focus,body.dash main select:focus,body.dash main textarea:focus{outline:none;border-color:var(--ac)!important;box-shadow:0 0 0 3px rgba(45,212,191,.2),0 0 20px -4px rgba(45,212,191,.5)}
 body.dash main select option{background:#0b1b19;color:#fff}
 body.dash main ::placeholder{color:#5f7a75}
-body.dash main .bg-brand-600{background:linear-gradient(135deg,#14b8a6,#0d9488)!important;color:#fff!important;box-shadow:0 8px 24px -8px rgba(20,184,166,.7);transition:transform .25s,box-shadow .25s}
+body.dash main .bg-brand-600{background:linear-gradient(135deg,#14b8a6,#0d9488)!important;color:#fff!important;box-shadow:0 8px 24px -8px rgba(20,184,166,.7);transition:transform .2s}
 body.dash main .bg-brand-600:hover{transform:translateY(-2px);box-shadow:0 12px 30px -8px rgba(45,212,191,.9)}
 body.dash main .text-brand-600,body.dash main .text-brand-700{color:var(--ac)!important}
 body.dash main thead,body.dash main .bg-slate-50\/50{background:rgba(255,255,255,.03)!important}
@@ -53,18 +51,18 @@ body.dash main .text-emerald-800{color:#6ee7b7!important}body.dash main .text-re
 
 /* hero card gradient on dashboard keeps its colour; cards get lift + cursor light */
 body.dash main .rounded-2xl,body.dash main .rounded-xl{position:relative}
-body.dash .gcard{position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s,border-color .3s}
+body.dash .gcard{position:relative;overflow:hidden;transition:transform .25s ease,border-color .25s}
 body.dash .gcard::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(45,212,191,.2),transparent 65%)}
 body.dash .gcard:hover{transform:translateY(-4px);border-color:rgba(45,212,191,.4)!important;box-shadow:0 18px 50px -20px rgba(20,184,166,.55)!important}
 body.dash .gcard:hover::before{opacity:1}
 
 /* entrance animation, staggered by JS */
-body.dash .in{opacity:0;transform:translateY(18px) scale(.985);animation:dIn .7s cubic-bezier(.22,1,.36,1) forwards;animation-delay:var(--d,0ms)}
+body.dash .in{opacity:0;transform:translateY(12px);animation:dIn .45s cubic-bezier(.22,1,.36,1) forwards;animation-delay:var(--d,0ms)}
 @keyframes dIn{to{opacity:1;transform:none}}
 body.dash #page.leaving{opacity:0;transform:translateY(6px);transition:opacity .12s,transform .12s}
 .stat-val{font-variant-numeric:tabular-nums}
 body.dash .toast-flash{animation:dIn .5s cubic-bezier(.22,1,.36,1) both}
-@media (prefers-reduced-motion:reduce){body.dash .in{animation:none;opacity:1;transform:none}body.dash .orb{animation:none}}
+@media (prefers-reduced-motion:reduce){body.dash .in{animation:none;opacity:1;transform:none}}
 
 /* patient hero button: solid white pill, always visible on the teal banner */
 body.dash main .hero-btn{background:#fff!important;color:#0f766e!important;box-shadow:0 10px 30px -8px rgba(255,255,255,.35),0 0 0 1px rgba(255,255,255,.6)!important;position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s}
@@ -83,3 +81,6 @@ body.dash main a:active,body.dash main button:active,body.dash aside nav a:activ
 body.dash .btn-busy{position:relative;color:transparent!important}
 body.dash .btn-busy::after{content:"";position:absolute;inset:0;margin:auto;width:16px;height:16px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* skip rendering work for off-screen content */
+body.dash main table{contain:layout paint}

@@ -14,7 +14,7 @@
     el.classList.add('hero-in');
     el.style.setProperty('--d', 120 + i * 160 + 'ms');
   });
-  document.querySelectorAll('section:first-of-type .blur-3xl').forEach((el) => el.classList.add('blob-float'));
+  document.querySelectorAll('.blur-3xl').forEach((el) => { el.style.filter = 'none'; el.style.opacity = '.35'; });
 
   // 3. Count-up numbers like "15+", "30k+", "4.9/5", "98%"
   const run = (el) => {
@@ -37,12 +37,11 @@
   });
 
   // 4. Cursor light on cards
+  let pc = null, pe = null, pt = false;
   document.addEventListener('pointermove', (e) => {
-    const c = e.target.closest && e.target.closest('article.reveal, figure.reveal');
-    if (!c) return;
-    const r = c.getBoundingClientRect();
-    c.style.setProperty('--mx', e.clientX - r.left + 'px');
-    c.style.setProperty('--my', e.clientY - r.top + 'px');
+    pc = e.target.closest && e.target.closest('article.reveal, figure.reveal'); pe = e;
+    if (!pc || pt) return; pt = true;
+    requestAnimationFrame(() => { pt = false; if (!pc) return; const r = pc.getBoundingClientRect(); pc.style.setProperty('--mx', pe.clientX - r.left + 'px'); pc.style.setProperty('--my', pe.clientY - r.top + 'px'); });
   }, { passive: true });
 
   // 5. Header shadow after scrolling

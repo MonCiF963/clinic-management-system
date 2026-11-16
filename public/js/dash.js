@@ -4,32 +4,47 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
-  /* ---------- hex background ---------- */
+  /* ---------- hex background (cheap: static grid cached once, only the glow near the cursor is redrawn) ---------- */
   const cv = $('#hexbg');
-  if (cv && !reduce) {
-    const ctx = cv.getContext('2d'); let w, h, mx = -999, my = -999; const R = 34;
-    const size = () => { w = cv.width = innerWidth; h = cv.height = innerHeight; };
-    size(); addEventListener('resize', size);
-    addEventListener('pointermove', (e) => { mx = e.clientX; my = e.clientY; }, { passive: true });
-    const hex = (x, y) => { ctx.beginPath(); for (let i = 0; i < 6; i++) { const a = Math.PI / 3 * i + Math.PI / 6; ctx[i ? 'lineTo' : 'moveTo'](x + R * Math.cos(a), y + R * Math.sin(a)); } ctx.closePath(); };
-    let raf; const draw = () => {
-      ctx.clearRect(0, 0, w, h); const dx = R * Math.sqrt(3), dy = R * 1.5;
-      for (let r = 0, y = 0; y < h + R; r++, y += dy) for (let x = (r % 2 ? dx / 2 : 0); x < w + R; x += dx) {
-        const d = Math.hypot(x - mx, y - my), k = Math.max(0, 1 - d / 230);
-        ctx.strokeStyle = `rgba(45,212,191,${0.05 + k * 0.5})`; ctx.lineWidth = 1 + k; hex(x, y); ctx.stroke();
-      }
-      raf = requestAnimationFrame(draw);
+  const lowEnd = reduce || (navigator.hardwareConcurrency || 4) <= 2 || innerWidth < 700;
+  let px = -999, py = -999, ticking = false;
+  const spot = $('.spot');
+  if (cv && !lowEnd) {
+    const ctx = cv.getContext('2d'); let w, h, grid; const R = 34, dx = R * Math.sqrt(3), dy = R * 1.5, GLOW = 200;
+    const path = (c, x, y) => { c.beginPath(); for (let i = 0; i < 6; i++) { const a = Math.PI / 3 * i + Math.PI / 6; c[i ? 'lineTo' : 'moveTo'](x + R * Math.cos(a), y + R * Math.sin(a)); } c.closePath(); };
+    const build = () => {
+      w = cv.width = innerWidth; h = cv.height = innerHeight;
+      grid = document.createElement('canvas'); grid.width = w; grid.height = h;
+      const g = grid.getContext('2d'); g.strokeStyle = 'rgba(45,212,191,.11)'; g.lineWidth = 1; g.beginPath();
+      for (let r = 0, y = 0; y < h + R; r++, y += dy) for (let x = (r % 2 ? dx / 2 : 0); x < w + R; x += dx) { for (let i = 0; i < 6; i++) { const a = Math.PI / 3 * i + Math.PI / 6; g[i ? 'lineTo' : 'moveTo'](x + R * Math.cos(a), y + R * Math.sin(a)); } g.closePath(); }
+      g.stroke(); ctx.drawImage(grid, 0, 0);
     };
-    draw();
-    document.addEventListener('visibilitychange', () => { cancelAnimationFrame(raf); if (!document.hidden) draw(); });
+    build(); let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(build, 200); });
+    var drawGlow = () => {
+      ctx.clearRect(0, 0, w, h); ctx.drawImage(grid, 0, 0);
+      ctx.lineWidth = 1.5;
+      for (let r = Math.max(0, Math.floor((py - GLOW) / dy)); r * dy < py + GLOW; r++) {
+        const y = r * dy; for (let x = (r % 2 ? dx / 2 : 0); x < w + R; x += dx) {
+          const d = Math.hypot(x - px, y - py); if (d > GLOW) continue;
+          ctx.strokeStyle = `rgba(45,212,191,${(1 - d / GLOW) * 0.45})`; path(ctx, x, y); ctx.stroke();
+        }
+      }
+    };
   }
 
-  /* ---------- spotlight ---------- */
-  const spot = $('.spot');
-  addEventListener('pointermove', (e) => { if (spot) { spot.style.setProperty('--sx', e.clientX + 'px'); spot.style.setProperty('--sy', e.clientY + 'px'); } }, { passive: true });
-  document.addEventListener('pointermove', (e) => {
-    const c = e.target.closest && e.target.closest('.gcard'); if (!c) return;
-    const r = c.getBoundingClientRect(); c.style.setProperty('--mx', e.clientX - r.left + 'px'); c.style.setProperty('--my', e.clientY - r.top + 'px');
+  /* ---------- pointer effects: one rAF per frame, transform only ---------- */
+  let cardEl = null, cx = 0, cy = 0;
+  addEventListener('pointermove', (e) => {
+    px = e.clientX; py = e.clientY;
+    const c = e.target.closest && e.target.closest('.gcard'); cardEl = c || null;
+    if (c) { const r = c.getBoundingClientRect(); cx = e.clientX - r.left; cy = e.clientY - r.top; }
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      if (spot) spot.style.transform = `translate3d(${px}px,${py}px,0)`;
+      if (typeof drawGlow === 'function') drawGlow();
+      if (cardEl) { cardEl.style.setProperty('--mx', cx + 'px'); cardEl.style.setProperty('--my', cy + 'px'); }
+    });
   }, { passive: true });
 
   /* ---------- per-page effects ---------- */
@@ -90,7 +105,6 @@
   const warm = (e) => { const a = e.target.closest && e.target.closest('a[href]'); if (a && local(a) && a.pathname !== '/' && a.href !== location.href) get(a.href).catch(() => cache.delete(a.href)); };
   document.addEventListener('pointerdown', warm, { passive: true });
   document.addEventListener('pointerover', warm, { passive: true });
-  setTimeout(() => $$('[data-nav]').forEach((a) => { if (a.href !== location.href) get(a.href).catch(() => cache.delete(a.href)); }), 400);
   document.addEventListener('touchstart', warm, { passive: true });
 
   document.addEventListener('submit', async (e) => {
