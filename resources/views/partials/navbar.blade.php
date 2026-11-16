@@ -38,38 +38,12 @@
             @endauth
         </div>
 
-        {{-- Mobile button --}}
-        <button id="menu-button" type="button" aria-expanded="false" aria-label="Toggle menu"
-                class="inline-flex size-10 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 md:hidden">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="size-6">
-                <path d="M4 7h16M4 12h16M4 17h16" />
-            </svg>
-        </button>
-    </div>
-
-    {{-- Mobile menu --}}
-    <div id="mobile-menu" class="hidden border-t border-slate-200 bg-white md:hidden">
-        <div class="space-y-1 px-4 py-4 text-sm font-medium">
-            <a href="{{ url('/') }}#services" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50">Services</a>
-            <a href="{{ url('/') }}#why-us" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50">Why us</a>
-            <a href="{{ url('/') }}#doctors" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50">Doctors</a>
-            <a href="{{ url('/') }}#reviews" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50">Reviews</a>
-            <a href="{{ url('/') }}#contact" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50">Contact</a>
-
+        {{-- Phone: one clear action; navigation lives in the bottom tab bar --}}
+        <div class="md:hidden">
             @auth
-                <a href="{{ route('dashboard') }}" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50">Dashboard</a>
+                <a href="{{ route('dashboard') }}" class="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white">Dashboard</a>
             @else
-                <a href="{{ route('login') }}" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50">Sign in</a>
-                <a href="{{ route('register') }}" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50">Sign up</a>
-            @endauth
-
-            @auth
-                @if (auth()->user()->hasRole('patient'))
-                    <a href="{{ route('appointments.create') }}"
-                       class="mt-3 block rounded-full bg-brand-600 px-5 py-3 text-center font-semibold text-white">
-                        Book appointment
-                    </a>
-                @endif
+                <a href="{{ route('login') }}" class="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white">Sign in</a>
             @endauth
         </div>
     </div>

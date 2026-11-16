@@ -67,3 +67,14 @@
   document.addEventListener('pointerover', (e) => { const a = e.target.closest && e.target.closest('a[href]'); if (a) prefetch(a); }, { passive: true });
   document.addEventListener('touchstart', (e) => { const a = e.target.closest && e.target.closest('a[href]'); if (a) prefetch(a); }, { passive: true });
 })();
+
+/* Phone tab bar: highlight the section being viewed */
+(() => {
+  const tabs = [...document.querySelectorAll('.tabbar a[data-tab]')];
+  if (!tabs.length || !document.getElementById('services')) return;
+  const map = { top: 'home', services: 'services', 'why-us': 'services', doctors: 'doctors', reviews: 'doctors', contact: 'contact' };
+  const set = (id) => tabs.forEach((t) => t.classList.toggle('on', t.dataset.tab === map[id]));
+  set('top');
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) set(e.target.id); }), { rootMargin: '-45% 0px -50% 0px' });
+  Object.keys(map).forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+})();
