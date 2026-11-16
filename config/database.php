@@ -97,6 +97,9 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => env('DB_SSLMODE', 'prefer'),
+            // Reuse the DB connection between requests: skips the TCP+TLS+auth handshake (several
+            // network round trips) that otherwise happens on EVERY page load with PHP-FPM.
+            'options' => extension_loaded('pdo_pgsql') ? [\PDO::ATTR_PERSISTENT => (bool) env('DB_PERSISTENT', true)] : [],
         ],
 
         'sqlsrv' => [

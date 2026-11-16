@@ -16,7 +16,11 @@ RUN composer dump-autoload --optimize --no-dev
 
 # ---- Stage 3: production image ----
 FROM serversideup/php:8.5-fpm-nginx
-ENV PHP_OPCACHE_ENABLE=1
+ENV PHP_OPCACHE_ENABLE=1 \
+    APP_DEBUG=false \
+    LOG_LEVEL=warning \
+    BCRYPT_ROUNDS=10 \
+    PHP_FPM_PM_MAX_CHILDREN=8
 USER root
 RUN install-php-extensions pdo_pgsql
 USER www-data
