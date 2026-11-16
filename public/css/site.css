@@ -59,3 +59,31 @@ body.sd [class*="bg-brand-50"],body.sd [class*="bg-brand-100"]{background:rgba(4
 body.sd .border-white{border-color:var(--bg)!important}
 body.sd footer{background:rgba(3,10,9,.8)!important}
 
+
+/* ================= PHONE LAYOUT (separate from desktop) ================= */
+.tabbar{display:none}
+@media (max-width:767px){
+  body.sd{padding-bottom:calc(68px + env(safe-area-inset-bottom))}
+  #site-header>div{height:56px!important}
+  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:rgba(6,16,15,.97);border-top:1px solid rgba(255,255,255,.09)}
+  .tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 2px;border-radius:12px;color:#8fa9a4;font-size:10.5px;font-weight:600;text-decoration:none;min-width:0;-webkit-tap-highlight-color:transparent}
+  .tabbar svg{width:22px;height:22px}
+  .tabbar a.on{color:#fff;background:rgba(45,212,191,.14);box-shadow:inset 0 0 0 1px rgba(45,212,191,.35)}
+  .tabbar a.on svg{color:#2dd4bf}
+  .tabbar a:active{transform:scale(.94)}
+
+  /* tighter, calmer sections */
+  main section{scroll-margin-top:64px}
+  main section[class*="py-20"],main section[class*="py-24"]{padding-top:44px!important;padding-bottom:44px!important}
+  main h1{font-size:2.1rem!important;line-height:1.15!important}
+  main h2{font-size:1.65rem!important;line-height:1.2!important}
+  main .hero-in a,main .hero-in button{min-height:48px}
+  main section:first-of-type [class*="flex"][class*="gap"] a{flex:1 1 100%;justify-content:center;text-align:center}
+  main .grid{gap:14px!important}
+  main article,main figure{padding:18px!important}
+  input,select,textarea{font-size:16px!important;min-height:46px}
+  main a[class*="rounded-full"],main button{min-height:44px}
+  footer{padding-bottom:12px}
+  article:hover,figure:hover{transform:none!important}
+}
+@media (max-width:380px){.tabbar a{font-size:9.5px}.tabbar svg{width:20px;height:20px}}

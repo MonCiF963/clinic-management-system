@@ -33,7 +33,7 @@
 </div>
 
 <div class="overflow-x-auto rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
-    <table class="w-full text-left text-sm">
+    <table class="rtable w-full text-left text-sm">
         <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
             <tr>
                 <th class="px-5 py-3">When</th>
@@ -47,12 +47,12 @@
         <tbody class="divide-y divide-slate-100">
             @forelse ($appointments as $a)
                 <tr>
-                    <td class="whitespace-nowrap px-5 py-4 font-medium text-slate-900">{{ $a->start_at->timezone($tz)->format('D, M j · H:i') }}</td>
-                    @if ($isStaff)<td class="px-5 py-4">{{ $a->patient->user->name }}<br><span class="text-xs text-slate-500">{{ $a->patient->user->phone }}</span></td>@endif
-                    <td class="px-5 py-4">{{ $a->doctor->user->name }}</td>
-                    <td class="px-5 py-4">{{ $a->service->name }}</td>
-                    <td class="px-5 py-4"><span class="rounded-full px-2.5 py-1 text-xs font-semibold {{ $badge[$a->status] ?? '' }}">{{ ucfirst(str_replace('_', ' ', $a->status)) }}</span></td>
-                    <td class="px-5 py-4">
+                    <td data-label="When" class="whitespace-nowrap px-5 py-4 font-medium text-slate-900">{{ $a->start_at->timezone($tz)->format('D, M j · H:i') }}</td>
+                    @if ($isStaff)<td data-label="Patient" class="px-5 py-4">{{ $a->patient->user->name }}<br><span class="text-xs text-slate-500">{{ $a->patient->user->phone }}</span></td>@endif
+                    <td data-label="Doctor" class="px-5 py-4">{{ $a->doctor->user->name }}</td>
+                    <td data-label="Service" class="px-5 py-4">{{ $a->service->name }}</td>
+                    <td data-label="Status" class="px-5 py-4"><span class="rounded-full px-2.5 py-1 text-xs font-semibold {{ $badge[$a->status] ?? '' }}">{{ ucfirst(str_replace('_', ' ', $a->status)) }}</span></td>
+                    <td data-label="" class="actions px-5 py-4">
                         <div class="flex flex-wrap justify-end gap-2">
                             @if ($user->hasRole('patient') && in_array($a->status, ['pending', 'confirmed']) && $a->start_at->isFuture())
                                 <form method="POST" action="{{ route('appointments.cancel', $a) }}" onsubmit="return confirm('Cancel this appointment?')">

@@ -92,10 +92,11 @@
     <div class="flex min-w-0 flex-1 flex-col">
         {{-- Top bar --}}
         <header class="top flex h-16 items-center justify-between border-b px-4 sm:px-8">
+            <a href="{{ route('home') }}" data-full class="show-sm brand-dot" aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></a>
             <h1 id="page-title" class="text-lg font-semibold">@yield('title', 'Dashboard')</h1>
 
             <div class="flex items-center gap-2 sm:gap-4">
-                <a href="{{ route('home') }}" data-full class="text-sm font-medium">View website</a>
+                <a href="{{ route('home') }}" data-full class="hide-sm text-sm font-medium">View website</a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-red-300 hover:text-red-600">
@@ -105,21 +106,23 @@
             </div>
         </header>
 
-        {{-- Mobile menu --}}
-        <nav class="mnav flex gap-2 overflow-x-auto border-b px-4 py-2 text-sm font-medium lg:hidden">
-            @foreach ($nav as [$label, $url, $roles, $ready])
-                @if ($ready && $user->hasRole(...$roles))
-                    <a href="{{ $url }}" data-nav class="shrink-0 rounded-full px-3.5 py-1.5 {{ request()->url() === $url ? 'on' : '' }}">{{ $label }}</a>
-                @endif
-            @endforeach
-        </nav>
-
         <main id="page" class="flex-1 p-4 sm:p-8">
             @include('partials.flash')
             @yield('content')
         </main>
     </div>
 </div>
+
+{{-- Phone: bottom tab bar (separate from the desktop sidebar) --}}
+<nav class="tabbar lg:hidden" aria-label="Main">
+    @php $tabs = collect($nav)->filter(fn ($n) => $n[3] && $user->hasRole(...$n[2]))->take(5); @endphp
+    @foreach ($tabs as [$label, $url])
+        <a href="{{ $url }}" data-nav class="{{ request()->url() === $url || str_starts_with(request()->url(), $url.'/') ? 'on' : '' }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{!! $icons[$label] ?? '' !!}</svg>
+            <span>{{ $label === 'Book appointment' ? 'Book' : $label }}</span>
+        </a>
+    @endforeach
+</nav>
 
 </body>
 </html>

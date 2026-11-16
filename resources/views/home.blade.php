@@ -59,7 +59,7 @@
 @endphp
 
 {{-- ============ HERO ============ --}}
-<section class="relative overflow-hidden bg-linear-to-b from-brand-50 via-white to-white">
+<section id="top" class="relative overflow-hidden bg-linear-to-b from-brand-50 via-white to-white">
     <div class="pointer-events-none absolute -top-24 -right-24 size-96 rounded-full bg-brand-200/50 blur-3xl"></div>
     <div class="pointer-events-none absolute top-40 -left-24 size-72 rounded-full bg-brand-100/60 blur-3xl"></div>
 

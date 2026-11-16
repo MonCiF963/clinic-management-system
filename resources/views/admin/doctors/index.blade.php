@@ -25,18 +25,18 @@
     @endif
 
     <div class="overflow-x-auto rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
-        <table class="w-full text-left text-sm">
+        <table class="rtable w-full text-left text-sm">
             <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
                 <tr><th class="px-5 py-3">Doctor</th><th class="px-5 py-3">Specialty</th><th class="px-5 py-3">Email</th><th class="px-5 py-3">Hours</th><th class="px-5 py-3"></th></tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
                 @forelse ($doctors as $d)
                     <tr>
-                        <td class="px-5 py-4 font-medium text-slate-900">{{ $d->user->name }}</td>
-                        <td class="px-5 py-4">{{ $d->specialty->name }}</td>
-                        <td class="px-5 py-4">{{ $d->user->email }}</td>
-                        <td class="px-5 py-4">{{ $d->availabilities_count ? $d->availabilities_count.' slot(s)' : 'Not set' }}</td>
-                        <td class="px-5 py-4 text-right"><a href="{{ route('admin.doctors.show', $d) }}" class="font-semibold text-brand-700 hover:underline">Working hours</a></td>
+                        <td data-label="Doctor" class="px-5 py-4 font-medium text-slate-900">{{ $d->user->name }}</td>
+                        <td data-label="Specialty" class="px-5 py-4">{{ $d->specialty->name }}</td>
+                        <td data-label="Email" class="px-5 py-4">{{ $d->user->email }}</td>
+                        <td data-label="Hours" class="px-5 py-4">{{ $d->availabilities_count ? $d->availabilities_count.' slot(s)' : 'Not set' }}</td>
+                        <td data-label="" class="actions px-5 py-4 text-right"><a href="{{ route('admin.doctors.show', $d) }}" class="font-semibold text-brand-700 hover:underline">Working hours</a></td>
                     </tr>
                 @empty
                     <tr><td colspan="5" class="px-5 py-10 text-center text-slate-500">No doctors yet.</td></tr>
