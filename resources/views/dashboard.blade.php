@@ -13,34 +13,24 @@
     try {
         if ($isPatient) {
             $patientId = \App\Models\Patient::where('user_id', $user->id)->value('id');
-            $mine = \App\Models\Appointment::where('patient_id', $patientId ?? 0);
-            $next = (clone $mine)->with(['doctor.user', 'service'])->whereIn('status', ['pending', 'confirmed'])
-                ->where('start_at', '>', now())->orderBy('start_at')->first();
+            $next = \App\Models\Appointment::where('patient_id', $patientId ?? 0)->with(['doctor.user', 'service'])
+                ->whereIn('status', ['pending', 'confirmed'])->where('start_at', '>', now())->orderBy('start_at')->first();
+            $p = \App\Support\DashboardStats::patient((int) ($patientId ?? 0));
             $cards = [
-                ['Upcoming appointments', number_format((clone $mine)->whereIn('status', ['pending', 'confirmed'])->where('start_at', '>', now())->count())],
-                ['Completed visits', number_format((clone $mine)->where('status', 'completed')->count())],
+                ['Upcoming appointments', number_format($p['upcoming'])],
+                ['Completed visits', number_format($p['completed'])],
             ];
         } else {
-            $from = now($tz)->startOfDay()->utc();
-            $to = now($tz)->endOfDay()->utc();
-            $monthFrom = now($tz)->startOfMonth()->utc();
-            $monthTo = now($tz)->endOfMonth()->utc();
             $cur = config('clinic.currency');
-
+            $st = \App\Support\DashboardStats::staff($user->hasRole('admin'));
             $cards = [
-                ['Patients', number_format(\App\Models\Patient::count())],
-                ['Appointments today', number_format(\App\Models\Appointment::whereBetween('start_at', [$from, $to])->whereNotIn('status', ['cancelled'])->count())],
-                ['Pending requests', number_format(\App\Models\Appointment::where('status', 'pending')->count())],
-                ['Doctors', number_format(\App\Models\Doctor::count())],
+                ['Patients', number_format($st['patients'])],
+                ['Appointments today', number_format($st['today'])],
+                ['Pending requests', number_format($st['pending'])],
+                ['Doctors', number_format($st['doctors'])],
             ];
-
-            if ($user->hasRole('admin')) {
-                $revenue = \App\Models\Appointment::query()
-                    ->join('services', 'services.id', '=', 'appointments.service_id')
-                    ->where('appointments.status', 'completed')
-                    ->whereBetween('appointments.start_at', [$monthFrom, $monthTo])
-                    ->sum('services.price');
-                $cards[] = ['Revenue this month', number_format((float) $revenue, 2).' '.$cur];
+            if ($st['revenue'] !== null) {
+                $cards[] = ['Revenue this month', number_format($st['revenue'], 2).' '.$cur];
             }
         }
     } catch (\Throwable $e) {

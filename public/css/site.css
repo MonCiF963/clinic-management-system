@@ -1,20 +1,16 @@
 /* Public site polish: smooth entrances, hover effects, glow. Plain CSS, no build needed. */
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
-  body { animation: pageIn .55s cubic-bezier(.22,1,.36,1) both; }
-  @keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
   /* staggered reveal: JS sets --d per element inside a group */
   .reveal { transition-delay: var(--d, 0ms) !important; }
-  .reveal.is-visible { transition-duration: .8s !important; transition-timing-function: cubic-bezier(.22,1,.36,1) !important; }
+  .reveal.is-visible { transition-duration: .55s !important; transition-timing-function: cubic-bezier(.22,1,.36,1) !important; }
 
   /* hero entrance */
   .hero-in { opacity: 0; transform: translateY(26px); animation: heroIn .9s cubic-bezier(.22,1,.36,1) forwards; animation-delay: var(--d, 0ms); }
   @keyframes heroIn { to { opacity: 1; transform: none; } }
 
   /* soft floating glow blobs behind the hero */
-  .blob-float { animation: blobFloat 12s ease-in-out infinite alternate; }
-  @keyframes blobFloat { to { transform: translate3d(36px, 48px, 0) scale(1.12); } }
 
   /* shine sweep on primary buttons */
   .btn-shine { position: relative; overflow: hidden; }
@@ -22,13 +18,13 @@
   .btn-shine:hover::after { left: 130%; }
 
   /* cards: lift + cursor-following light, like the OneCode+ site */
-  article.reveal, figure.reveal { position: relative; overflow: hidden; transition: transform .45s cubic-bezier(.22,1,.36,1), box-shadow .45s, border-color .3s, opacity .8s, background .3s; }
+  article.reveal, figure.reveal { position: relative; overflow: hidden; transition: transform .3s ease, border-color .25s, opacity .6s; }
   article.reveal::before, figure.reveal::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .35s; background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgba(45,212,191,.22), transparent 62%); }
   article.reveal:hover::before, figure.reveal:hover::before { opacity: 1; }
 }
 
 /* header gets a soft shadow once the page scrolls */
-#site-header { transition: box-shadow .3s, background-color .3s; }
+#site-header { transition: box-shadow .3s; }
 #site-header.scrolled { box-shadow: 0 10px 30px -12px rgba(15, 118, 110, .25); background-color: rgba(255,255,255,.92); }
 
 /* thin progress bar on top while a page loads */
@@ -36,23 +32,22 @@
 
 /* ===== Dark glass theme, same palette as the dashboard ===== */
 body.sd{--bg:#06100f;--glass:rgba(255,255,255,.045);--line:rgba(255,255,255,.09);--mut:#8fa9a4;--ac:#2dd4bf;background:var(--bg)!important;color:#c9ddd9;position:relative}
-body.sd .orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;animation:sdOrb 16s ease-in-out infinite alternate}
-body.sd .orb.o1{width:440px;height:440px;background:rgba(20,184,166,.26);top:-120px;left:-80px}
-body.sd .orb.o2{width:380px;height:380px;background:rgba(56,189,248,.16);bottom:-120px;right:-60px;animation-delay:-6s}
-@keyframes sdOrb{to{transform:translate3d(60px,50px,0) scale(1.15)}}
+body.sd .orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0}
+body.sd .orb.o1{width:760px;height:760px;top:-320px;left:-260px;background:radial-gradient(circle,rgba(20,184,166,.20),transparent 68%)}
+body.sd .orb.o2{width:680px;height:680px;bottom:-300px;right:-240px;background:radial-gradient(circle,rgba(56,189,248,.13),transparent 68%)}
 body.sd main,body.sd footer,body.sd header{position:relative;z-index:1}
 body.sd header#site-header{position:sticky}
 body.sd .bg-white,body.sd .bg-slate-50{background:transparent!important}
 body.sd section.bg-slate-50,body.sd section.bg-white\/0{background:rgba(255,255,255,.02)!important}
 body.sd [class*="from-brand-50"],body.sd [class*="from-brand-100"]{background-image:none!important;background:transparent!important}
-body.sd article,body.sd figure,body.sd form.bg-white,body.sd .rounded-3xl.bg-white,body.sd .rounded-2xl.bg-white,body.sd .rounded-2xl.border,body.sd .rounded-3xl.border{background:var(--glass)!important;border-color:var(--line)!important;backdrop-filter:blur(14px);box-shadow:0 10px 40px -18px rgba(0,0,0,.8)!important;--tw-ring-color:var(--line)}
+body.sd article,body.sd figure,body.sd form.bg-white,body.sd .rounded-3xl.bg-white,body.sd .rounded-2xl.bg-white,body.sd .rounded-2xl.border,body.sd .rounded-3xl.border{background:rgba(14,28,26,.82)!important;border-color:var(--line)!important;box-shadow:0 10px 40px -18px rgba(0,0,0,.8)!important;--tw-ring-color:var(--line)}
 body.sd article:hover,body.sd figure:hover{border-color:rgba(45,212,191,.4)!important;box-shadow:0 18px 50px -20px rgba(20,184,166,.55)!important;transform:translateY(-4px)}
 body.sd .text-slate-900,body.sd .text-slate-800,body.sd .text-slate-700{color:#f1faf8!important}
 body.sd .text-slate-600,body.sd .text-slate-500,body.sd .text-slate-400{color:var(--mut)!important}
 body.sd .text-brand-600,body.sd .text-brand-700{color:var(--ac)!important}
 body.sd [class*="border-slate"],body.sd .border-y,body.sd .border-t,body.sd .border-b{border-color:var(--line)!important}
 body.sd .ring-slate-100,body.sd .ring-slate-200{--tw-ring-color:var(--line)!important}
-body.sd #site-header,body.sd header.bg-white\/80{background:rgba(6,16,15,.7)!important;backdrop-filter:blur(18px);border-color:var(--line)!important}
+body.sd #site-header,body.sd header.bg-white\/80{background:rgba(6,16,15,.94)!important;border-color:var(--line)!important}
 body.sd #site-header.scrolled{background:rgba(6,16,15,.88)!important;box-shadow:0 10px 30px -12px rgba(45,212,191,.25)}
 body.sd a.bg-brand-600,body.sd button.bg-brand-600,body.sd .bg-brand-600{background:linear-gradient(135deg,#14b8a6,#0d9488)!important;color:#fff!important;box-shadow:0 8px 24px -8px rgba(20,184,166,.7)}
 body.sd a.bg-brand-600:hover,body.sd button.bg-brand-600:hover{box-shadow:0 12px 30px -8px rgba(45,212,191,.9);transform:translateY(-2px)}
@@ -63,4 +58,4 @@ body.sd ::placeholder{color:#5f7a75}
 body.sd [class*="bg-brand-50"],body.sd [class*="bg-brand-100"]{background:rgba(45,212,191,.12)!important}
 body.sd .border-white{border-color:var(--bg)!important}
 body.sd footer{background:rgba(3,10,9,.8)!important}
-@media (prefers-reduced-motion:reduce){body.sd .orb{animation:none}}
+
