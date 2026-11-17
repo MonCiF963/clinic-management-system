@@ -25,6 +25,7 @@
     $icons = [
         'Dashboard' => '<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>',
         'Book appointment' => '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M12 14v4M10 16h4"/>',
+        'Book for patient' => '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M12 14v4M10 16h4"/>',
         'Appointments' => '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/>',
         'Doctors' => '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
         'Services' => '<path d="M12 3v18M3 12h18"/>',
@@ -38,6 +39,7 @@
     $nav = [
         ['Dashboard', route('dashboard'), $all, true],
         ['Book appointment', route('appointments.create'), ['patient'], true],
+        ['Book for patient', route('doctor.appointments.create'), ['doctor'], true],
         ['Appointments', route('appointments.index'), $all, true],
         ['Doctors', route('admin.doctors.index'), ['admin'], true],
         ['Services', route('admin.services.index'), ['admin'], true],
@@ -119,7 +121,7 @@
     @foreach ($tabs as [$label, $url])
         <a href="{{ $url }}" data-nav class="{{ request()->url() === $url || str_starts_with(request()->url(), $url.'/') ? 'on' : '' }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{!! $icons[$label] ?? '' !!}</svg>
-            <span>{{ $label === 'Book appointment' ? 'Book' : $label }}</span>
+            <span>{{ in_array($label, ['Book appointment', 'Book for patient']) ? 'Book' : $label }}</span>
         </a>
     @endforeach
 </nav>
