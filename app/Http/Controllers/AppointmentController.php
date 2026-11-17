@@ -172,6 +172,11 @@ class AppointmentController extends Controller
             return back()->with('error', 'That status change is not allowed.');
         }
 
+        // Doctors can only confirm or cancel (decline) appointments.
+        if ($user->hasRole('doctor') && ! in_array($status, ['confirmed', 'cancelled'], true)) {
+            abort(403);
+        }
+
         $appointment->update(['status' => $status]);
         AuditLog::record('appointment.'.$status, $appointment);
 

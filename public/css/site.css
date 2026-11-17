@@ -25,7 +25,7 @@
 
 /* header gets a soft shadow once the page scrolls */
 #site-header { transition: box-shadow .3s; }
-#site-header.scrolled { box-shadow: 0 10px 30px -12px rgba(15, 118, 110, .25); background-color: rgba(255,255,255,.92); }
+#site-header.scrolled { box-shadow: 0 10px 30px -12px rgba(15, 118, 110, .25); }
 
 /* thin progress bar on top while a page loads */
 #topbar-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 100; background: linear-gradient(90deg, #14b8a6, #5eead4); box-shadow: 0 0 12px #2dd4bf; transition: width .3s ease, opacity .3s; pointer-events: none; }
@@ -35,8 +35,9 @@ body.sd{--bg:#06100f;--glass:rgba(255,255,255,.045);--line:rgba(255,255,255,.09)
 body.sd .orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0}
 body.sd .orb.o1{width:760px;height:760px;top:-320px;left:-260px;background:radial-gradient(circle,rgba(20,184,166,.20),transparent 68%)}
 body.sd .orb.o2{width:680px;height:680px;bottom:-300px;right:-240px;background:radial-gradient(circle,rgba(56,189,248,.13),transparent 68%)}
-body.sd main,body.sd footer,body.sd header{position:relative;z-index:1}
-body.sd header#site-header{position:sticky}
+body.sd main,body.sd footer{position:relative;z-index:1}
+/* header must sit ABOVE the page content, otherwise scrolled content covers it and it can't be clicked */
+body.sd header#site-header{position:sticky;top:0;z-index:100}
 body.sd .bg-white,body.sd .bg-slate-50{background:transparent!important}
 body.sd section.bg-slate-50,body.sd section.bg-white\/0{background:rgba(255,255,255,.02)!important}
 body.sd [class*="from-brand-50"],body.sd [class*="from-brand-100"]{background-image:none!important;background:transparent!important}
@@ -47,8 +48,8 @@ body.sd .text-slate-600,body.sd .text-slate-500,body.sd .text-slate-400{color:va
 body.sd .text-brand-600,body.sd .text-brand-700{color:var(--ac)!important}
 body.sd [class*="border-slate"],body.sd .border-y,body.sd .border-t,body.sd .border-b{border-color:var(--line)!important}
 body.sd .ring-slate-100,body.sd .ring-slate-200{--tw-ring-color:var(--line)!important}
-body.sd #site-header,body.sd header.bg-white\/80{background:rgba(6,16,15,.94)!important;border-color:var(--line)!important}
-body.sd #site-header.scrolled{background:rgba(6,16,15,.88)!important;box-shadow:0 10px 30px -12px rgba(45,212,191,.25)}
+body.sd #site-header,body.sd header.bg-white\/80{background:rgba(6,16,15,.62)!important;-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);border-color:rgba(255,255,255,.12)!important}
+body.sd #site-header.scrolled{background:rgba(6,16,15,.74)!important;box-shadow:0 10px 30px -12px rgba(45,212,191,.25)}
 body.sd a.bg-brand-600,body.sd button.bg-brand-600,body.sd .bg-brand-600{background:linear-gradient(135deg,#14b8a6,#0d9488)!important;color:#fff!important;box-shadow:0 8px 24px -8px rgba(20,184,166,.7)}
 body.sd a.bg-brand-600:hover,body.sd button.bg-brand-600:hover{box-shadow:0 12px 30px -8px rgba(45,212,191,.9);transform:translateY(-2px)}
 body.sd input,body.sd select,body.sd textarea{background:rgba(255,255,255,.05)!important;border-color:var(--line)!important;color:#fff!important}
@@ -65,7 +66,7 @@ body.sd footer{background:rgba(3,10,9,.8)!important}
 @media (max-width:767px){
   body.sd{padding-bottom:calc(68px + env(safe-area-inset-bottom))}
   #site-header>div{height:56px!important}
-  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:rgba(6,16,15,.97);border-top:1px solid rgba(255,255,255,.09)}
+  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:100;padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:rgba(6,16,15,.78);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.09)}
   .tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 2px;border-radius:12px;color:#8fa9a4;font-size:10.5px;font-weight:600;text-decoration:none;min-width:0;-webkit-tap-highlight-color:transparent}
   .tabbar svg{width:22px;height:22px}
   .tabbar a.on{color:#fff;background:rgba(45,212,191,.14);box-shadow:inset 0 0 0 1px rgba(45,212,191,.35)}

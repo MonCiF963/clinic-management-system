@@ -65,6 +65,7 @@
                             @endif
                             @if ($isStaff)
                                 @foreach ($next[$a->status] ?? [] as $to)
+                                    @continue($user->hasRole('doctor') && ! in_array($to, ['confirmed', 'cancelled']))
                                     <form method="POST" action="{{ route('appointments.status', $a) }}">
                                         @csrf @method('PATCH')
                                         <input type="hidden" name="status" value="{{ $to }}">
