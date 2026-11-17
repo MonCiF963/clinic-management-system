@@ -15,7 +15,8 @@ return [
     |
     */
 
-    'default' => env('CACHE_STORE', 'file'),
+    // Fixed on purpose: the database cache store locks rows (`select ... for update`), which took up to 3s per call here.
+    'default' => 'file',
 
     /*
     |--------------------------------------------------------------------------
