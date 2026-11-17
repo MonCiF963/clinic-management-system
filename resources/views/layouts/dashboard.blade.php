@@ -10,6 +10,9 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/dash.css') }}?v={{ filemtime(public_path('css/dash.css')) }}">
+    @if (auth()->user()?->hasRole('admin'))
+        <link rel="stylesheet" href="{{ asset('css/admin.css') }}?v={{ filemtime(public_path('css/admin.css')) }}">
+    @endif
     <script src="{{ asset('js/dash.js') }}?v={{ filemtime(public_path('js/dash.js')) }}" defer></script>
 </head>
 <body class="dash font-sans antialiased">
@@ -27,6 +30,7 @@
         'Book appointment' => '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M12 14v4M10 16h4"/>',
         'Book for patient' => '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M12 14v4M10 16h4"/>',
         'Appointments' => '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/>',
+        'Users' => '<circle cx="9" cy="8" r="3.5"/><path d="M2 20a7 7 0 0 1 14 0M17 4a3.5 3.5 0 0 1 0 7M22 20a7 7 0 0 0-4-6"/>',
         'Doctors' => '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
         'Services' => '<path d="M12 3v18M3 12h18"/>',
         'Specialties' => '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
@@ -41,6 +45,7 @@
         ['Book appointment', route('appointments.create'), ['patient'], true],
         ['Book for patient', route('doctor.appointments.create'), ['doctor'], true],
         ['Appointments', route('appointments.index'), $all, true],
+        ['Users', route('admin.users.index'), ['admin'], true],
         ['Doctors', route('admin.doctors.index'), ['admin'], true],
         ['Services', route('admin.services.index'), ['admin'], true],
         ['Specialties', route('admin.specialties.index'), ['admin'], true],

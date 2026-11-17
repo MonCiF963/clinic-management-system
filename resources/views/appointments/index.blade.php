@@ -82,6 +82,12 @@
                                     </form>
                                 @endforeach
                             @endif
+                            @if ($user->hasRole('admin'))
+                                <form method="POST" action="{{ route('appointments.destroy', $a) }}" onsubmit="return confirm('Delete this appointment? It will be removed from all lists and its time slot freed.')">
+                                    @csrf @method('DELETE')
+                                    <button class="rounded-full border border-red-300 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50">Delete</button>
+                                </form>
+                            @endif
                         </div>
                     </td>
                 </tr>
