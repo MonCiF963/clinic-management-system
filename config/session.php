@@ -18,7 +18,8 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'cookie'),
+    // Fixed on purpose (not read from env): database sessions cost 2-3 network round trips to Supabase on every request.
+    'driver' => 'cookie',
 
     /*
     |--------------------------------------------------------------------------
