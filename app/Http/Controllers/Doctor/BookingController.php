@@ -8,6 +8,7 @@ use App\Models\AuditLog;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Service;
+use App\Support\DashboardStats;
 use App\Support\Slots;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
@@ -98,6 +99,7 @@ class BookingController extends Controller
         }
 
         AuditLog::record('appointment.create_by_doctor', $appointment);
+        DashboardStats::flush();
 
         return redirect()->route('appointments.index')->with('status', 'Appointment booked and confirmed.');
     }

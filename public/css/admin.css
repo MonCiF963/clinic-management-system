@@ -1,0 +1,40 @@
+/* Admin Dashboard V7 components - same dark teal palette as the rest of the dashboard. */
+body.dash .v7-hero{position:relative;overflow:hidden;color:#fff;border:1px solid rgba(255,255,255,.18);
+  background:radial-gradient(520px 260px at 90% 0%,rgba(255,255,255,.18),transparent 60%),linear-gradient(135deg,#0f766e,#0d9488 55%,#14b8a6);
+  box-shadow:0 30px 70px -30px rgba(20,184,166,.6),inset 0 1px 0 rgba(255,255,255,.3)}
+body.dash .v7-hero::after{content:"";position:absolute;right:-60px;bottom:-90px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 65%);pointer-events:none}
+body.dash .v7-hero h2{color:#fff!important}
+body.dash .ver{display:inline-flex;align-items:center;padding:6px 14px;border-radius:99px;font-size:12px;font-weight:700;letter-spacing:.03em;color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32)}
+body.dash .v7-ghost{color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.32);transition:background .25s,transform .25s}
+body.dash .v7-ghost:hover{background:rgba(255,255,255,.24);transform:translateY(-2px)}
+body.dash .v7-kpi,body.dash .v7-card{display:block;background:rgba(14,28,26,.82);border:1px solid var(--line);box-shadow:0 12px 40px -22px rgba(0,0,0,.8);transition:transform .3s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .3s}
+body.dash .v7-kpi:hover,body.dash .v7-card:hover{transform:translateY(-4px);border-color:rgba(45,212,191,.4);box-shadow:0 20px 50px -22px rgba(20,184,166,.55)}
+body.dash .v7-ico{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;color:#5eead4;background:rgba(45,212,191,.12);box-shadow:inset 0 0 0 1px rgba(45,212,191,.22);transition:transform .3s}
+body.dash .v7-ico svg{width:19px;height:19px}
+body.dash .v7-kpi:hover .v7-ico{transform:scale(1.1) rotate(-6deg)}
+body.dash .v7-chart text{font-family:inherit}
+body.dash .v7-bar rect{transform-box:fill-box;transform-origin:bottom;animation:barUp .7s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(var(--i)*45ms);transition:filter .2s}
+body.dash .v7-bar:hover rect{filter:drop-shadow(0 8px 12px rgba(45,212,191,.5)) brightness(1.1)}
+@keyframes barUp{from{transform:scaleY(.02);opacity:0}to{transform:none;opacity:1}}
+body.dash .v7-donut{position:relative;flex:none;width:124px;height:124px;border-radius:50%;box-shadow:0 10px 30px -14px rgba(20,184,166,.5)}
+body.dash .v7-donut::after{content:"";position:absolute;inset:20px;border-radius:50%;background:#0b1b19;box-shadow:inset 0 2px 8px rgba(0,0,0,.5)}
+body.dash .v7-donut span{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:var(--mut)}
+body.dash .v7-donut b{font-size:22px;color:#fff;line-height:1.1}
+body.dash .v7-track{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+body.dash .v7-track span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#5eead4,#14b8a6);transform-origin:left;animation:trackIn .9s cubic-bezier(.22,1,.36,1) both}
+@keyframes trackIn{from{transform:scaleX(0)}to{transform:none}}
+body.dash .v7-avatar{display:inline-flex;align-items:center;justify-content:center;flex:none;width:36px;height:36px;border-radius:50%;font-weight:700;color:#fff;background:linear-gradient(135deg,#2dd4bf,#0d9488);box-shadow:0 6px 14px -6px rgba(20,184,166,.7)}
+@media (max-width:1023px){
+  body.dash .v7-kpi .stat-val{font-size:1.4rem!important;white-space:nowrap}
+  body.dash .v7-hero{padding:20px!important}
+}
+@media (prefers-reduced-motion:reduce){body.dash .v7-bar rect,body.dash .v7-track span{animation:none}}
+
+/* status badges readable on the dark theme */
+body.dash main .bg-amber-100{background:rgba(245,158,11,.16)!important;color:#fcd34d!important}
+body.dash main .bg-emerald-100{background:rgba(34,197,94,.16)!important;color:#86efac!important}
+body.dash main .bg-sky-100{background:rgba(56,189,248,.16)!important;color:#7dd3fc!important}
+body.dash main .bg-rose-100,body.dash main .bg-red-100{background:rgba(244,63,94,.16)!important;color:#fda4af!important}
+body.dash main .bg-brand-100{background:rgba(45,212,191,.16)!important;color:#5eead4!important}
+body.dash main .bg-slate-200{background:rgba(255,255,255,.1)!important;color:#c9ddd9!important}
+body.dash main .text-amber-800,body.dash main .text-emerald-800,body.dash main .text-sky-800,body.dash main .text-rose-700,body.dash main .text-brand-800{color:inherit!important}

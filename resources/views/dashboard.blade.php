@@ -3,6 +3,9 @@
 @section('title', 'Dashboard')
 
 @section('content')
+@if (auth()->user()->hasRole('admin'))
+    @include('dashboard-admin')
+@else
 @php
     $user = auth()->user();
     $tz = config('clinic.timezone');
@@ -83,5 +86,6 @@
             @endif
         </div>
     </div>
+@endif
 @endif
 @endsection

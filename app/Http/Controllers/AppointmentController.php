@@ -7,6 +7,7 @@ use App\Models\AuditLog;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Service;
+use App\Support\DashboardStats;
 use App\Support\Slots;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
@@ -138,6 +139,7 @@ class AppointmentController extends Controller
         }
 
         AuditLog::record('appointment.create', $appointment);
+        DashboardStats::flush();
 
         return redirect()->route('appointments.index')->with('status', 'Appointment requested. The clinic will confirm it shortly.');
     }
@@ -157,6 +159,7 @@ class AppointmentController extends Controller
 
         $appointment->update(['status' => 'cancelled']);
         AuditLog::record('appointment.cancel', $appointment);
+        DashboardStats::flush();
 
         return back()->with('status', 'Appointment cancelled.');
     }
@@ -186,7 +189,20 @@ class AppointmentController extends Controller
 
         $appointment->update(['status' => $status]);
         AuditLog::record('appointment.'.$status, $appointment);
+        DashboardStats::flush();
 
         return back()->with('status', 'Appointment updated.');
+    }
+
+    /** Admin only. Soft delete: hidden everywhere and the time slot is freed, but the row (and audit trail) stays. */
+    public function destroy(Request $request, Appointment $appointment): RedirectResponse
+    {
+        abort_unless($request->user()->hasRole('admin'), 403);
+
+        $appointment->delete();
+        AuditLog::record('appointment.delete', $appointment);
+        DashboardStats::flush();
+
+        return back()->with('status', 'Appointment deleted.');
     }
 }
