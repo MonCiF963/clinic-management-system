@@ -25,6 +25,11 @@ Route::middleware('auth')->group(function () {
     // Appointments: patients book and cancel their own, staff manage everything.
     Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
 
+    Route::middleware('role:doctor')->prefix('doctor')->name('doctor.')->group(function () {
+        Route::get('/appointments/create', [\App\Http\Controllers\Doctor\BookingController::class, 'create'])->name('appointments.create');
+        Route::post('/appointments', [\App\Http\Controllers\Doctor\BookingController::class, 'store'])->middleware('throttle:20,1')->name('appointments.store');
+    });
+
     Route::middleware('role:patient')->group(function () {
         Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
         Route::post('/appointments', [AppointmentController::class, 'store'])->middleware('throttle:10,1')->name('appointments.store');

@@ -172,10 +172,6 @@ class AppointmentController extends Controller
             return back()->with('error', 'That status change is not allowed.');
         }
 
-        if ($user->hasRole('doctor') && $status !== 'completed') {
-            abort(403);
-        }
-
         $appointment->update(['status' => $status]);
         AuditLog::record('appointment.'.$status, $appointment);
 

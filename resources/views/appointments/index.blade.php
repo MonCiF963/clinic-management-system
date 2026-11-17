@@ -27,6 +27,9 @@
             @endforeach
         </select>
     </form>
+    @if ($user->hasRole('doctor'))
+        <a href="{{ route('doctor.appointments.create') }}" class="rounded-xl bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition hover:bg-brand-700">Book for a patient</a>
+    @endif
     @if ($user->hasRole('patient'))
         <a href="{{ route('appointments.create') }}" class="rounded-xl bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition hover:bg-brand-700">Book an appointment</a>
     @endif
@@ -62,7 +65,6 @@
                             @endif
                             @if ($isStaff)
                                 @foreach ($next[$a->status] ?? [] as $to)
-                                    @continue($user->hasRole('doctor') && $to !== 'completed')
                                     <form method="POST" action="{{ route('appointments.status', $a) }}">
                                         @csrf @method('PATCH')
                                         <input type="hidden" name="status" value="{{ $to }}">
