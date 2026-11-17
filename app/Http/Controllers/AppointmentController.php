@@ -24,6 +24,9 @@ class AppointmentController extends Controller
         'checked_in' => ['completed'],
     ];
 
+    /** What a doctor can choose for an appointment of theirs, while it is pending or confirmed. */
+    public const DOCTOR_CHOICES = ['confirmed', 'cancelled', 'no_show'];
+
     public function index(Request $request): View
     {
         $user = $request->user();
@@ -168,13 +171,17 @@ class AppointmentController extends Controller
 
         $status = $request->validate(['status' => ['required', Rule::in(Appointment::STATUSES)]])['status'];
 
-        if (! in_array($status, self::NEXT[$appointment->status] ?? [], true)) {
-            return back()->with('error', 'That status change is not allowed.');
+        if ($user->hasRole('doctor')) {
+            // Doctor: Confirm / Cancel / Not present, any time after the appointment is made.
+            $allowed = in_array($appointment->status, ['pending', 'confirmed'], true)
+                && in_array($status, self::DOCTOR_CHOICES, true)
+                && $status !== $appointment->status;
+        } else {
+            $allowed = in_array($status, self::NEXT[$appointment->status] ?? [], true);
         }
 
-        // Doctors can only confirm or cancel (decline) appointments.
-        if ($user->hasRole('doctor') && ! in_array($status, ['confirmed', 'cancelled'], true)) {
-            abort(403);
+        if (! $allowed) {
+            return back()->with('error', 'That status change is not allowed.');
         }
 
         $appointment->update(['status' => $status]);

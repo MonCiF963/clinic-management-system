@@ -63,9 +63,18 @@
                                     <button class="rounded-full border border-red-300 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50">Cancel</button>
                                 </form>
                             @endif
-                            @if ($isStaff)
+                            @if ($user->hasRole('doctor'))
+                                @if (in_array($a->status, ['pending', 'confirmed']))
+                                    @foreach (['confirmed' => 'Confirm', 'cancelled' => 'Cancel', 'no_show' => 'Not present'] as $to => $text)
+                                        <form method="POST" action="{{ route('appointments.status', $a) }}" onsubmit="return {{ $to === 'confirmed' ? 'true' : "confirm('Mark this appointment as ".strtolower($text)."?')" }}">
+                                            @csrf @method('PATCH')
+                                            <input type="hidden" name="status" value="{{ $to }}">
+                                            <button @disabled($to === $a->status) class="rounded-full border px-3 py-1.5 text-xs font-semibold disabled:cursor-default disabled:opacity-40 {{ $to === 'confirmed' ? 'border-brand-300 text-brand-700 hover:bg-brand-50' : 'border-red-300 text-red-600 hover:bg-red-50' }}">{{ $text }}</button>
+                                        </form>
+                                    @endforeach
+                                @endif
+                            @elseif ($isStaff)
                                 @foreach ($next[$a->status] ?? [] as $to)
-                                    @continue($user->hasRole('doctor') && ! in_array($to, ['confirmed', 'cancelled']))
                                     <form method="POST" action="{{ route('appointments.status', $a) }}">
                                         @csrf @method('PATCH')
                                         <input type="hidden" name="status" value="{{ $to }}">
