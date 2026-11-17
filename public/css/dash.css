@@ -8,6 +8,7 @@ body.dash .orb.o2{width:640px;height:640px;bottom:-280px;right:-220px;background
 body.dash .spot{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;z-index:0;will-change:transform;background:radial-gradient(circle,rgba(45,212,191,.10),transparent 65%)}
 #dash-progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:200;background:linear-gradient(90deg,#14b8a6,#7dd3fc);box-shadow:0 0 14px #2dd4bf;opacity:0;transition:width .35s ease,opacity .3s;pointer-events:none}
 body.dash .shell{position:relative;z-index:1}
+body.dash aside{position:sticky;top:0;height:100vh;align-self:flex-start;z-index:90}
 
 /* sidebar + header */
 body.dash aside{background:rgba(6,16,15,.94)!important;border-right:1px solid var(--line)}
@@ -16,7 +17,7 @@ body.dash aside nav a:hover{color:#fff!important;background:var(--glass)!importa
 body.dash aside nav a.on{color:#fff!important;background:linear-gradient(90deg,rgba(45,212,191,.22),rgba(45,212,191,.04))!important;box-shadow:inset 0 0 0 1px rgba(45,212,191,.35),0 0 24px -8px rgba(45,212,191,.6)}
 body.dash aside nav a.on::before{content:"";position:absolute;left:-12px;top:20%;height:60%;width:3px;border-radius:3px;background:var(--ac);box-shadow:0 0 12px var(--ac)}
 body.dash aside nav svg{width:18px;height:18px;flex:none}
-body.dash header.top{background:rgba(6,16,15,.94)!important;border-color:var(--line)!important;position:sticky;top:0;z-index:20}
+body.dash header.top{background:rgba(6,16,15,.66)!important;-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);border-color:var(--line)!important;position:sticky;top:0;z-index:100}
 body.dash header.top h1{color:#fff!important}
 body.dash header.top a{color:var(--mut)!important}
 body.dash header.top a:hover{color:var(--ac)!important}
@@ -100,7 +101,7 @@ body.dash main table{contain:layout paint}
   body.dash header.top button{padding:7px 14px!important;font-size:13px!important}
   body.dash header.top>div:first-child,body.dash header.top{display:flex}
   body.dash main{padding:14px!important}
-  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:rgba(6,16,15,.97);border-top:1px solid var(--line)}
+  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:100;padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:rgba(6,16,15,.78);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid var(--line)}
   .tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 2px;border-radius:12px;color:var(--mut);font-size:10.5px;font-weight:600;text-decoration:none;min-width:0;-webkit-tap-highlight-color:transparent}
   .tabbar a span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
   .tabbar svg{width:22px;height:22px}
