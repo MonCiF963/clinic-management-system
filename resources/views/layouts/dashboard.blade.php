@@ -6,7 +6,7 @@
     <title>@yield('title', 'Dashboard') – {{ config('app.name') }}</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800|outfit:400,500,600,700&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/dash.css') }}?v={{ filemtime(public_path('css/dash.css')) }}">
@@ -17,8 +17,6 @@
 </head>
 <body class="dash font-sans antialiased">
 <div id="dash-progress"></div>
-<canvas id="hexbg"></canvas>
-<div class="orb o1"></div><div class="orb o2"></div><div class="spot"></div>
 
 @php
     $user = auth()->user();
@@ -65,6 +63,7 @@
             </span>
             <span class="font-bold text-white">{{ config('app.name') }}</span>
         </a>
+        <span class="ver">{{ $user->roleLabel() }} · V7</span>
 
         <nav class="mt-4 flex-1 space-y-1 px-3 text-sm font-medium">
             @foreach ($nav as [$label, $url, $roles, $ready])
@@ -102,13 +101,13 @@
             <a href="{{ route('home') }}" data-full class="show-sm brand-dot" aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></a>
             <h1 id="page-title" class="text-lg font-semibold">@yield('title', 'Dashboard')</h1>
 
-            <div class="flex items-center gap-2 sm:gap-4">
+            <div class="tr">
+                <span class="date-pill hide-sm">{{ now(config('clinic.timezone'))->format('D, M j') }}</span>
                 <a href="{{ route('home') }}" data-full class="hide-sm text-sm font-medium">View website</a>
+                <span class="ava" title="{{ $user->name }}">{{ strtoupper(mb_substr($user->name, 0, 1)) }}</span>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-red-300 hover:text-red-600">
-                        Log out
-                    </button>
+                    <button type="submit">Log out</button>
                 </form>
             </div>
         </header>
