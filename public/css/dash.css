@@ -1,133 +1,155 @@
-/* Dashboard theme: dark glass, teal glow, spotlight. Unlayered, so it overrides Tailwind utilities. */
-body.dash{--bg:#06100f;--glass:rgba(255,255,255,.045);--line:rgba(255,255,255,.09);--tx:#e6f4f1;--mut:#8fa9a4;--ac:#2dd4bf;
-  background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden}
-body.dash #hexbg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.7}
-body.dash .orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0}
-body.dash .orb.o1{width:700px;height:700px;top:-300px;left:-250px;background:radial-gradient(circle,rgba(20,184,166,.22),transparent 68%)}
-body.dash .orb.o2{width:640px;height:640px;bottom:-280px;right:-220px;background:radial-gradient(circle,rgba(56,189,248,.14),transparent 68%)}
-body.dash .spot{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;z-index:0;will-change:transform;background:radial-gradient(circle,rgba(45,212,191,.10),transparent 65%)}
+/* Clinic dashboard - OneCode+ style: floating glass sidebar, pill controls, glow, staggered entrances.
+   Static background (no animated canvas/orbs) and no cursor light. Unlayered, so it overrides Tailwind utilities. */
+body.dash{--bg:#06100f;--ink:#fff;--mut:#8fa9a4;--line:rgba(255,255,255,.13);--ac:#2dd4bf;--ac2:#14b8a6;--ac3:#0f766e;--ice:#ccfbf1;
+  --glass:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.03));
+  --sh:0 18px 44px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.14);
+  --glow:0 0 0 1px rgba(45,212,191,.45),0 18px 44px rgba(20,184,166,.32),inset 0 1px 0 rgba(255,255,255,.2);
+  --ease:cubic-bezier(.22,1,.36,1);
+  background:var(--bg);color:#d5e8e4;min-height:100vh;overflow-x:hidden;font-family:Outfit,Inter,system-ui,sans-serif}
+/* static background lives on its own fixed layer: cheap to scroll, never animated */
+body.dash::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(1100px 600px at 12% -10%,rgba(20,184,166,.26),transparent 60%),radial-gradient(900px 600px at 105% 105%,rgba(56,189,248,.13),transparent 60%),var(--bg)}
+body.dash ::selection{background:rgba(45,212,191,.35)}
+body.dash ::-webkit-scrollbar{width:10px;height:10px}body.dash ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.16);border-radius:9px}
 #dash-progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:200;background:linear-gradient(90deg,#14b8a6,#7dd3fc);box-shadow:0 0 14px #2dd4bf;opacity:0;transition:width .35s ease,opacity .3s;pointer-events:none}
-body.dash .shell{position:relative;z-index:1}
-body.dash aside{position:sticky;top:0;height:100vh;align-self:flex-start;z-index:90}
+body.dash .shell{position:relative}
 
-/* sidebar + header */
-body.dash aside{background:rgba(6,16,15,.94)!important;border-right:1px solid var(--line)}
-body.dash aside nav a{position:relative;color:var(--mut)!important;background:transparent!important;border-radius:12px;transition:color .25s,background .25s,transform .25s}
-body.dash aside nav a:hover{color:#fff!important;background:var(--glass)!important;transform:translateX(3px)}
-body.dash aside nav a.on{color:#fff!important;background:linear-gradient(90deg,rgba(45,212,191,.22),rgba(45,212,191,.04))!important;box-shadow:inset 0 0 0 1px rgba(45,212,191,.35),0 0 24px -8px rgba(45,212,191,.6)}
-body.dash aside nav a.on::before{content:"";position:absolute;left:-12px;top:20%;height:60%;width:3px;border-radius:3px;background:var(--ac);box-shadow:0 0 12px var(--ac)}
-body.dash aside nav svg{width:18px;height:18px;flex:none}
-body.dash header.top{background:rgba(6,16,15,.66)!important;-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);border-color:var(--line)!important;position:sticky;top:0;z-index:100}
-body.dash header.top h1{color:#fff!important}
-body.dash header.top a{color:var(--mut)!important}
+/* ---------- floating glass sidebar ---------- */
+body.dash aside{position:fixed;left:14px;top:14px;bottom:14px;width:240px;z-index:90;border-radius:30px;padding:22px 16px;
+  background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid var(--line);box-shadow:var(--sh)}
+@media (min-width:1024px){body.dash .shell>div{margin-left:270px}}
+body.dash aside>a:first-child{height:auto!important;padding:0 8px 10px!important}
+body.dash aside>a:first-child span:first-child{width:44px;height:44px;border-radius:15px;background:linear-gradient(145deg,#0d9488,#0f766e)!important;border:1px solid rgba(255,255,255,.22);box-shadow:0 0 22px rgba(20,184,166,.5)}
+body.dash aside>a:first-child span:last-child{font-size:1.2rem;font-weight:700}
+body.dash aside .ver{display:inline-block;margin:0 8px 18px;padding:3px 10px;border-radius:99px;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ice);background:rgba(45,212,191,.14);border:1px solid rgba(45,212,191,.3)}
+body.dash aside nav{margin-top:0!important;padding:0!important}
+body.dash aside nav a{position:relative;color:var(--mut)!important;background:transparent!important;border-radius:99px;padding:13px 16px!important;font-weight:500;transition:background .3s,color .3s,transform .3s var(--ease)}
+body.dash aside nav a:hover{color:#fff!important;background:rgba(255,255,255,.08)!important;transform:translateX(4px)}
+body.dash aside nav a.on{color:#fff!important;transform:none;background:linear-gradient(90deg,var(--ac2),var(--ac3))!important;box-shadow:0 10px 26px rgba(20,184,166,.5),0 0 30px rgba(20,184,166,.3),inset 0 1px 0 rgba(255,255,255,.35)}
+body.dash aside nav svg{width:20px;height:20px;flex:none;transition:transform .3s var(--ease)}
+body.dash aside nav a:hover svg{transform:scale(1.12)}
+body.dash aside>div:last-child{border:1px solid var(--line)!important;background:rgba(255,255,255,.05);border-radius:22px;padding:12px 14px!important}
+
+/* ---------- top bar ---------- */
+body.dash header.top{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:16px;height:auto!important;padding:22px 30px 18px!important;border:0!important;
+  background:linear-gradient(180deg,rgba(6,16,15,.78),rgba(6,16,15,.45) 70%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+body.dash header.top h1{margin:0;font-size:1.9rem!important;font-weight:600;letter-spacing:-.03em;background:linear-gradient(90deg,#fff,var(--ice));-webkit-background-clip:text;background-clip:text;color:transparent!important}
+body.dash header.top .tr{display:flex;align-items:center;gap:12px}
+body.dash .date-pill{padding:10px 16px;border-radius:99px;font-size:.88rem;color:var(--ice);background:var(--glass);border:1px solid var(--line)}
+body.dash .ava{position:relative;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;font-weight:600;color:#fff;background:linear-gradient(135deg,var(--ac2),var(--ac3));box-shadow:0 0 0 3px rgba(255,255,255,.12),0 10px 24px rgba(20,184,166,.5)}
+body.dash .ava::after{content:"";position:absolute;right:0;bottom:0;width:11px;height:11px;border-radius:50%;background:#2ecc88;border:2px solid var(--bg);box-shadow:0 0 10px #2ecc88}
+body.dash header.top a{color:var(--mut)!important;transition:color .25s}
 body.dash header.top a:hover{color:var(--ac)!important}
-body.dash header.top button{background:var(--glass);border-color:var(--line)!important;color:var(--tx)!important}
-body.dash header.top button:hover{border-color:#f87171!important;color:#fca5a5!important;box-shadow:0 0 18px -4px rgba(248,113,113,.5)}
-body.dash .mnav{background:rgba(6,16,15,.94)!important;border-color:var(--line)!important}
-body.dash .mnav a{background:var(--glass)!important;color:var(--mut)!important;border:1px solid var(--line)}
-body.dash .mnav a.on{background:rgba(45,212,191,.2)!important;color:#fff!important;border-color:rgba(45,212,191,.5)}
+body.dash header.top button{height:44px;padding:0 18px!important;border-radius:99px;font-weight:500;background:rgba(255,255,255,.06);border:1px solid var(--line)!important;color:#d5e8e4!important;transition:all .3s}
+body.dash header.top button:hover{color:#fff!important;border-color:rgba(255,107,112,.55)!important;background:rgba(255,107,112,.14);box-shadow:0 0 24px rgba(255,107,112,.22)}
+.show-sm{display:none}
+.brand-dot{width:34px;height:34px;border-radius:12px;background:linear-gradient(145deg,#0d9488,#0f766e);color:#fff;align-items:center;justify-content:center;margin-right:10px;flex:none;box-shadow:0 0 18px rgba(20,184,166,.5)}
+.brand-dot svg{width:16px;height:16px}
 
-/* page content: remap the light utilities to glass */
-body.dash main{color:var(--tx)}
-body.dash main .bg-white,body.dash main .bg-slate-50,body.dash main .bg-slate-100{background:rgba(14,28,26,.82)!important;border-color:var(--line)!important}
-body.dash main [class*="border-slate"],body.dash main .divide-y>*,body.dash main table,body.dash main tr,body.dash main td,body.dash main th{border-color:var(--line)!important}
+/* ---------- content: glass cards, pills ---------- */
+body.dash main{max-width:1500px;padding:6px 30px 50px!important;color:#d5e8e4}
+body.dash main .rounded-2xl,body.dash main .rounded-3xl{border-radius:26px!important}
+body.dash main .bg-white,body.dash main .bg-slate-50,body.dash main .bg-slate-100{background:var(--glass)!important;border:1px solid var(--line)!important;box-shadow:var(--sh)!important;--tw-ring-shadow:0 0 #0000;-webkit-backdrop-filter:blur(14px) saturate(1.25);backdrop-filter:blur(14px) saturate(1.25)}
+body.dash main [class*="border-slate"],body.dash main table,body.dash main tr,body.dash main td,body.dash main th{border-color:rgba(255,255,255,.08)!important}
 body.dash main .text-slate-900,body.dash main .text-slate-800,body.dash main .text-slate-700{color:#f1faf8!important}
 body.dash main .text-slate-600,body.dash main .text-slate-500,body.dash main .text-slate-400{color:var(--mut)!important}
-body.dash main .shadow,body.dash main .shadow-sm,body.dash main .shadow-md,body.dash main .shadow-lg{box-shadow:0 10px 40px -18px rgba(0,0,0,.8)!important}
-body.dash main input,body.dash main select,body.dash main textarea{background:rgba(255,255,255,.05)!important;border-color:var(--line)!important;color:#fff!important;transition:border-color .2s,box-shadow .2s}
-body.dash main input:focus,body.dash main select:focus,body.dash main textarea:focus{outline:none;border-color:var(--ac)!important;box-shadow:0 0 0 3px rgba(45,212,191,.2),0 0 20px -4px rgba(45,212,191,.5)}
+body.dash main .text-brand-600,body.dash main .text-brand-700{color:var(--ac)!important}
+body.dash main .shadow,body.dash main .shadow-sm,body.dash main .shadow-md,body.dash main .shadow-lg{box-shadow:var(--sh)!important}
+body.dash .gcard{position:relative;overflow:hidden;transition:transform .45s var(--ease),box-shadow .45s var(--ease),border-color .3s}
+body.dash .gcard:hover{transform:translateY(-6px);box-shadow:var(--glow)!important;border-color:transparent!important}
+
+body.dash main input:not([type=checkbox]):not([type=radio]),body.dash main select{min-height:48px;border-radius:99px!important;background:rgba(255,255,255,.07)!important;border:1px solid var(--line)!important;color:#fff!important;outline:none;transition:border .25s,box-shadow .25s,background .25s}
+body.dash main textarea{background:rgba(255,255,255,.07)!important;border:1px solid var(--line)!important;color:#fff!important;border-radius:20px!important;outline:none}
+body.dash main input:focus,body.dash main select:focus,body.dash main textarea:focus{border-color:var(--ac)!important;background:rgba(255,255,255,.1)!important;box-shadow:0 0 0 4px rgba(45,212,191,.18),0 0 26px rgba(20,184,166,.25)!important}
 body.dash main select option{background:#0b1b19;color:#fff}
 body.dash main ::placeholder{color:#5f7a75}
-body.dash main .bg-brand-600{background:linear-gradient(135deg,#14b8a6,#0d9488)!important;color:#fff!important;box-shadow:0 8px 24px -8px rgba(20,184,166,.7);transition:transform .2s}
-body.dash main .bg-brand-600:hover{transform:translateY(-2px);box-shadow:0 12px 30px -8px rgba(45,212,191,.9)}
-body.dash main .text-brand-600,body.dash main .text-brand-700{color:var(--ac)!important}
-body.dash main thead,body.dash main .bg-slate-50\/50{background:rgba(255,255,255,.03)!important}
-body.dash main tbody tr{transition:background .2s}
-body.dash main tbody tr:hover{background:rgba(45,212,191,.06)}
-body.dash main [class*="bg-amber-1"],body.dash main [class*="bg-emerald-1"],body.dash main [class*="bg-red-1"],body.dash main [class*="bg-sky-1"],body.dash main [class*="bg-blue-1"]{filter:brightness(.95)}
-/* flash messages */
-body.dash main .bg-emerald-50{background:rgba(16,185,129,.12)!important;border-color:rgba(16,185,129,.4)!important;color:#6ee7b7!important}
-body.dash main .bg-red-50{background:rgba(239,68,68,.12)!important;border-color:rgba(239,68,68,.4)!important;color:#fca5a5!important}
-body.dash main .text-emerald-800{color:#6ee7b7!important}body.dash main .text-red-700{color:#fca5a5!important}
+body.dash main .bg-brand-600{position:relative;overflow:hidden;border-radius:99px!important;border:0;background:linear-gradient(90deg,var(--ac2),var(--ac3))!important;color:#fff!important;box-shadow:0 10px 26px rgba(20,184,166,.45),inset 0 1px 0 rgba(255,255,255,.4)!important;transition:transform .3s var(--ease),box-shadow .3s}
+body.dash main .bg-brand-600::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);transition:left .7s var(--ease);pointer-events:none}
+body.dash main .bg-brand-600:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(20,184,166,.65),inset 0 1px 0 rgba(255,255,255,.4)!important}
+body.dash main .bg-brand-600:hover::after{left:130%}
+body.dash main .bg-brand-600:active{transform:scale(.97)}
+body.dash main .hero-btn{background:#fff!important;color:#0f766e!important;box-shadow:0 10px 30px -8px rgba(255,255,255,.35)!important}
 
-/* hero card gradient on dashboard keeps its colour; cards get lift + cursor light */
-body.dash main .rounded-2xl,body.dash main .rounded-xl{position:relative}
-body.dash .gcard{position:relative;overflow:hidden;transition:transform .25s ease,border-color .25s}
-body.dash .gcard::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(45,212,191,.2),transparent 65%)}
-body.dash .gcard:hover{transform:translateY(-4px);border-color:rgba(45,212,191,.4)!important;box-shadow:0 18px 50px -20px rgba(20,184,166,.55)!important}
-body.dash .gcard:hover::before{opacity:1}
+/* status pills with glowing dot */
+body.dash main td span.rounded-full[class*="bg-"]{display:inline-flex;align-items:center;gap:7px;padding:5px 13px!important;font-weight:500}
+body.dash main td span.rounded-full[class*="bg-"]::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
+body.dash main .bg-amber-100{background:rgba(245,165,36,.16)!important;color:#ffc15a!important}
+body.dash main .bg-emerald-100{background:rgba(46,204,136,.16)!important;color:#5be0a4!important}
+body.dash main .bg-sky-100,body.dash main .bg-blue-100{background:rgba(79,139,255,.18)!important;color:#9cc2ff!important}
+body.dash main .bg-rose-100,body.dash main .bg-red-100{background:rgba(255,107,112,.16)!important;color:#ff9a9e!important}
+body.dash main .bg-brand-100{background:rgba(45,212,191,.16)!important;color:#5eead4!important}
+body.dash main .bg-slate-200{background:rgba(255,255,255,.1)!important;color:#c9ddd9!important}
+body.dash main .text-amber-800,body.dash main .text-emerald-800,body.dash main .text-sky-800,body.dash main .text-rose-700,body.dash main .text-brand-800,body.dash main .text-red-700,body.dash main .text-slate-600.rounded-full{color:inherit!important}
 
-/* entrance animation, staggered by JS */
-body.dash .in{opacity:0;transform:translateY(12px);animation:dIn .45s cubic-bezier(.22,1,.36,1) forwards;animation-delay:var(--d,0ms)}
-@keyframes dIn{to{opacity:1;transform:none}}
-body.dash #page.leaving{opacity:0;transform:translateY(6px);transition:opacity .12s,transform .12s}
-.stat-val{font-variant-numeric:tabular-nums}
-body.dash .toast-flash{animation:dIn .5s cubic-bezier(.22,1,.36,1) both}
-@media (prefers-reduced-motion:reduce){body.dash .in{animation:none;opacity:1;transform:none}}
+/* tables */
+body.dash main th{color:var(--mut)!important;font-weight:500;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase}
+body.dash main thead,body.dash main .bg-slate-50\/50{background:transparent!important}
+body.dash main tbody tr{animation:dIn .5s var(--ease) both;transition:background .25s}
+body.dash main tbody tr:nth-child(2){animation-delay:.04s}body.dash main tbody tr:nth-child(3){animation-delay:.08s}body.dash main tbody tr:nth-child(4){animation-delay:.12s}
+body.dash main tbody tr:nth-child(5){animation-delay:.16s}body.dash main tbody tr:nth-child(6){animation-delay:.2s}body.dash main tbody tr:nth-child(n+7){animation-delay:.24s}
+body.dash main tbody tr:hover{background:rgba(45,212,191,.09)}
+body.dash main tbody tr:hover td:first-child{box-shadow:inset 3px 0 0 var(--ac)}
+body.dash main table button[class*="border-"],body.dash main table a[class*="border-"]{border-radius:99px;transition:all .3s}
 
-/* patient hero button: solid white pill, always visible on the teal banner */
-body.dash main .hero-btn{background:#fff!important;color:#0f766e!important;box-shadow:0 10px 30px -8px rgba(255,255,255,.35),0 0 0 1px rgba(255,255,255,.6)!important;position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s}
-body.dash main .hero-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 14px 36px -8px rgba(45,212,191,.8)!important}
-body.dash main .hero-btn::after{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(20,184,166,.35),transparent);transform:skewX(-20deg);transition:left .7s}
-body.dash main .hero-btn:hover::after{left:130%}
-
-body.dash main .bg-amber-50{background:rgba(245,158,11,.12)!important;border:1px solid rgba(245,158,11,.4);color:#fcd34d!important}
+/* flash */
+body.dash main .bg-emerald-50{background:rgba(46,204,136,.13)!important;border:1px solid rgba(46,204,136,.4)!important;color:#6ee7b7!important;border-radius:99px!important}
+body.dash main .bg-red-50{background:rgba(255,107,112,.13)!important;border:1px solid rgba(255,107,112,.4)!important;color:#fca5a5!important;border-radius:22px!important}
+body.dash main .bg-amber-50{background:rgba(245,165,36,.13)!important;border:1px solid rgba(245,165,36,.4)!important;color:#fcd34d!important}
+body.dash main .text-emerald-800{color:#6ee7b7!important}
 body.dash main .text-amber-800,body.dash main .text-amber-700{color:#fcd34d!important}
 
-/* instant click feedback */
+/* entrance + page transitions */
+body.dash .in{opacity:0;transform:translateY(16px);animation:dIn .6s var(--ease) forwards;animation-delay:var(--d,0ms)}
+@keyframes dIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 body.dash #page{transition:opacity .15s}
 body.dash #page.busy{opacity:.55;pointer-events:none}
-body.dash aside nav a,body.dash .mnav a,body.dash main a,body.dash main button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-body.dash main a:active,body.dash main button:active,body.dash aside nav a:active{transform:scale(.96)!important;transition:transform .08s!important}
+.stat-val{font-variant-numeric:tabular-nums}
+body.dash .toast-flash{animation:dIn .5s var(--ease) both}
+body.dash main a:active,body.dash main button:active,body.dash aside nav a:active{transform:scale(.97)!important;transition:transform .08s!important}
 body.dash .btn-busy{position:relative;color:transparent!important}
 body.dash .btn-busy::after{content:"";position:absolute;inset:0;margin:auto;width:16px;height:16px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* skip rendering work for off-screen content */
-body.dash main table{contain:layout paint}
-
-/* ================= PHONE LAYOUT (separate from desktop) ================= */
-.show-sm{display:none}
+body.dash a,body.dash button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .tabbar{display:none}
+
+/* ================= PHONE ================= */
 @media (max-width:1023px){
-  body.dash{padding-bottom:calc(68px + env(safe-area-inset-bottom))}
+  body.dash{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+  body.dash aside{display:none!important}
   .hide-sm{display:none!important}
   .show-sm{display:inline-flex}
-  .brand-dot{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#14b8a6,#0d9488);color:#fff;align-items:center;justify-content:center;margin-right:10px;flex:none}
-  .brand-dot svg{width:16px;height:16px}
-  body.dash header.top{height:56px!important;padding:0 14px!important}
-  body.dash header.top h1{font-size:17px!important;margin-right:auto}
-  body.dash header.top>div{gap:8px!important}
-  body.dash header.top button{padding:7px 14px!important;font-size:13px!important}
-  body.dash header.top>div:first-child,body.dash header.top{display:flex}
-  body.dash main{padding:14px!important}
-  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:100;padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:rgba(6,16,15,.78);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid var(--line)}
-  .tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 2px;border-radius:12px;color:var(--mut);font-size:10.5px;font-weight:600;text-decoration:none;min-width:0;-webkit-tap-highlight-color:transparent}
+  body.dash header.top{padding:14px 16px 10px!important}
+  body.dash header.top h1{font-size:1.45rem!important;margin-right:auto}
+  body.dash .date-pill{display:none}
+  body.dash .ava{width:38px;height:38px;font-size:.9rem}
+  body.dash header.top button{height:38px;padding:0 14px!important;font-size:13px}
+  body.dash main{padding:4px 16px 24px!important}
+  /* floating glass tab bar */
+  .tabbar{display:flex;position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:100;gap:4px;padding:8px;border-radius:28px;
+    background:var(--glass);background-color:rgba(8,22,20,.7);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid var(--line);box-shadow:0 14px 34px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.14)}
+  .tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px;border-radius:99px;color:var(--mut);font-size:10.5px;font-weight:500;text-decoration:none;min-width:0;transition:background .3s,color .3s}
   .tabbar a span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-  .tabbar svg{width:22px;height:22px}
-  .tabbar a.on{color:#fff;background:rgba(45,212,191,.14);box-shadow:inset 0 0 0 1px rgba(45,212,191,.35)}
-  .tabbar a.on svg{color:var(--ac)}
+  .tabbar svg{width:21px;height:21px}
+  .tabbar a.on{color:#fff;background:linear-gradient(90deg,var(--ac2),var(--ac3));box-shadow:0 8px 20px rgba(20,184,166,.5),inset 0 1px 0 rgba(255,255,255,.35)}
   .tabbar a:active{transform:scale(.94)}
-
-  /* readable, thumb-friendly controls (16px stops iOS zoom-on-focus) */
-  body.dash main input,body.dash main select,body.dash main textarea{font-size:16px!important;min-height:46px}
+  body.dash .gcard:hover{transform:none}
+  body.dash main input:not([type=checkbox]):not([type=radio]),body.dash main select,body.dash main textarea{font-size:16px!important}
   body.dash main a.rounded-full,body.dash main button,body.dash main a.rounded-xl{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
   body.dash main h2{font-size:1.4rem!important;line-height:1.25}
   body.dash main .p-8{padding:20px!important}
-  body.dash main .rounded-3xl{border-radius:20px}
   body.dash main .grid{gap:12px!important}
   body.dash main .stat-val{font-size:1.6rem!important}
-  body.dash .gcard:hover{transform:none}
-
   /* tables become stacked cards */
   body.dash main table.rtable,body.dash main table.rtable tbody,body.dash main table.rtable tr,body.dash main table.rtable td{display:block;width:100%}
   body.dash main table.rtable thead{display:none}
-  body.dash main table.rtable tr{padding:12px 14px;margin:0 0 10px;border:1px solid var(--line);border-radius:16px;background:rgba(14,28,26,.82)}
+  body.dash main table.rtable tr{padding:12px 14px;margin:0 0 10px;border:1px solid var(--line);border-radius:20px;background:var(--glass)}
   body.dash main table.rtable td{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:7px 0!important;text-align:right;border:0!important;white-space:normal!important}
   body.dash main table.rtable td[data-label]:not([data-label=""])::before{content:attr(data-label);color:var(--mut);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;text-align:left;flex:none}
   body.dash main table.rtable td.actions{justify-content:flex-end;flex-wrap:wrap;padding-top:10px!important;margin-top:4px;border-top:1px solid var(--line)!important}
-  body.dash main table.rtable td[colspan]{display:block;text-align:center}
   body.dash main table.rtable td.actions:not(:has(a,button,form)){display:none}
+  body.dash main table.rtable td[colspan]{display:block;text-align:center}
+  body.dash main table.rtable tbody tr:hover td:first-child{box-shadow:none}
   body.dash main .overflow-x-auto{overflow:visible}
 }
-@media (max-width:380px){.tabbar a{font-size:9.5px}.tabbar svg{width:20px;height:20px}}
+@media (max-width:380px){.tabbar a{font-size:9.5px}.tabbar svg{width:19px;height:19px}}
+@media (prefers-reduced-motion:reduce){body.dash .in,body.dash main tbody tr{animation:none;opacity:1;transform:none}}
