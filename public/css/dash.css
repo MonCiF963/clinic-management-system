@@ -127,7 +127,8 @@ body.dash a,body.dash button{-webkit-tap-highlight-color:transparent;touch-actio
   /* floating glass tab bar */
   .tabbar{display:flex;position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:100;gap:4px;padding:8px;border-radius:28px;
     background:var(--glass);background-color:rgba(8,22,20,.7);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid var(--line);box-shadow:0 14px 34px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.14)}
-  .tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px;border-radius:99px;color:var(--mut);font-size:10.5px;font-weight:500;text-decoration:none;min-width:0;transition:background .3s,color .3s}
+  .tabbar{overflow-x:auto;scrollbar-width:none}.tabbar::-webkit-scrollbar{display:none}
+  .tabbar a{flex:1 0 66px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px;border-radius:99px;color:var(--mut);font-size:10.5px;font-weight:500;text-decoration:none;min-width:0;transition:background .3s,color .3s}
   .tabbar a span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
   .tabbar svg{width:21px;height:21px}
   .tabbar a.on{color:#fff;background:linear-gradient(90deg,var(--ac2),var(--ac3));box-shadow:0 8px 20px rgba(20,184,166,.5),inset 0 1px 0 rgba(255,255,255,.35)}
