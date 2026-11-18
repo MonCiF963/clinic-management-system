@@ -59,7 +59,7 @@
 @endphp
 
 {{-- ============ HERO ============ --}}
-<section id="top" class="relative overflow-hidden bg-linear-to-b from-brand-50 via-white to-white">
+<section id="top" class="snap-sec relative overflow-hidden bg-linear-to-b from-brand-50 via-white to-white">
     <div class="pointer-events-none absolute -top-24 -right-24 size-96 rounded-full bg-brand-200/50 blur-3xl"></div>
     <div class="pointer-events-none absolute top-40 -left-24 size-72 rounded-full bg-brand-100/60 blur-3xl"></div>
 
@@ -173,7 +173,7 @@
 </section>
 
 {{-- ============ STATS ============ --}}
-<section class="border-y border-slate-200 bg-white">
+<section id="stats" class="snap-sec border-y border-slate-200 bg-white">
     <div class="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 py-12 sm:px-6 lg:grid-cols-4 lg:px-8">
         @foreach ($stats as [$number, $label])
             <div class="reveal text-center">
@@ -185,7 +185,7 @@
 </section>
 
 {{-- ============ SERVICES ============ --}}
-<section id="services" class="scroll-mt-20 py-20 sm:py-28">
+<section id="services" class="snap-sec scroll-mt-20 py-20 sm:py-28">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="reveal mx-auto max-w-2xl text-center">
             <p class="text-sm font-semibold tracking-wider text-brand-600 uppercase">Our services</p>
@@ -210,7 +210,7 @@
 </section>
 
 {{-- ============ WHY US ============ --}}
-<section id="why-us" class="scroll-mt-20 bg-slate-50 py-20 sm:py-28">
+<section id="why-us" class="snap-sec scroll-mt-20 bg-slate-50 py-20 sm:py-28">
     <div class="mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
 
         <div class="reveal">
@@ -249,7 +249,7 @@
 </section>
 
 {{-- ============ DOCTORS ============ --}}
-<section id="doctors" class="scroll-mt-20 py-20 sm:py-28">
+<section id="doctors" class="snap-sec scroll-mt-20 py-20 sm:py-28">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="reveal mx-auto max-w-2xl text-center">
             <p class="text-sm font-semibold tracking-wider text-brand-600 uppercase">Our team</p>
@@ -279,7 +279,7 @@
 </section>
 
 {{-- ============ REVIEWS ============ --}}
-<section id="reviews" class="scroll-mt-20 bg-brand-900 py-20 sm:py-28">
+<section id="reviews" class="snap-sec scroll-mt-20 bg-brand-900 py-20 sm:py-28">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="reveal mx-auto max-w-2xl text-center">
             <p class="text-sm font-semibold tracking-wider text-brand-300 uppercase">Testimonials</p>
@@ -305,7 +305,7 @@
 </section>
 
 {{-- ============ CONTACT ============ --}}
-<section id="contact" class="scroll-mt-20 py-20 sm:py-28">
+<section id="contact" class="snap-sec scroll-mt-20 py-20 sm:py-28">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="reveal grid overflow-hidden rounded-3xl bg-linear-to-br from-brand-600 to-brand-800 shadow-2xl shadow-brand-900/20 {{ auth()->check() && auth()->user()->hasRole('patient') ? 'lg:grid-cols-2' : '' }}">
 

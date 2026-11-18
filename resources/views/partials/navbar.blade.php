@@ -13,6 +13,7 @@
 
         {{-- Desktop links --}}
         <nav class="hidden items-center gap-8 text-sm font-medium md:flex">
+            <a href="{{ url('/') }}#top" class="transition hover:text-brand-600">Home</a>
             <a href="{{ url('/') }}#services" class="transition hover:text-brand-600">Services</a>
             <a href="{{ url('/') }}#why-us" class="transition hover:text-brand-600">Why us</a>
             <a href="{{ url('/') }}#doctors" class="transition hover:text-brand-600">Doctors</a>

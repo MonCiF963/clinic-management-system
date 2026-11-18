@@ -43,11 +43,11 @@
         ['Book appointment', route('appointments.create'), ['patient'], true],
         ['Book for patient', route('doctor.appointments.create'), ['doctor'], true],
         ['Appointments', route('appointments.index'), $all, true],
+        ['Patients', route('patients.index'), ['admin', 'receptionist', 'doctor'], true],
         ['Users', route('admin.users.index'), ['admin'], true],
         ['Doctors', route('admin.doctors.index'), ['admin'], true],
         ['Services', route('admin.services.index'), ['admin'], true],
         ['Specialties', route('admin.specialties.index'), ['admin'], true],
-        ['Patients', '#', ['admin', 'receptionist'], false],
         ['Billing', '#', ['admin', 'receptionist'], false],
         ['Reports', '#', ['admin'], false],
     ];
@@ -121,7 +121,7 @@
 
 {{-- Phone: bottom tab bar (separate from the desktop sidebar) --}}
 <nav class="tabbar lg:hidden" aria-label="Main">
-    @php $tabs = collect($nav)->filter(fn ($n) => $n[3] && $user->hasRole(...$n[2]))->take(5); @endphp
+    @php $tabs = collect($nav)->filter(fn ($n) => $n[3] && $user->hasRole(...$n[2])); @endphp
     @foreach ($tabs as [$label, $url])
         <a href="{{ $url }}" data-nav class="{{ request()->url() === $url || str_starts_with(request()->url(), $url.'/') ? 'on' : '' }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{!! $icons[$label] ?? '' !!}</svg>

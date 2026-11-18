@@ -41,6 +41,9 @@ Route::middleware('auth')->group(function () {
         ->middleware('role:admin,receptionist,doctor')->name('appointments.status');
 
     // Admin only.
+    Route::get('/patients', [\App\Http\Controllers\PatientController::class, 'index'])
+        ->middleware('role:admin,receptionist,doctor')->name('patients.index');
+
     Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])
         ->middleware('role:admin')->name('appointments.destroy');
 
