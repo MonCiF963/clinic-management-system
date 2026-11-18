@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
+        Route::get('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'show'])->name('users.show');
         Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
         Route::post('/services', [ServiceController::class, 'store'])->name('services.store');
         Route::put('/services/{service}', [ServiceController::class, 'update'])->name('services.update');

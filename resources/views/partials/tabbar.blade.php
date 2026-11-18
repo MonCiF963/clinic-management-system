@@ -5,7 +5,6 @@
         ['Home', $home.'#top', 'M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z'],
         ['Services', $home.'#services', 'M12 3v18M3 12h18'],
         ['Doctors', $home.'#doctors', 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0'],
-        ['Contact', $home.'#contact', 'M4 5h16v12H8l-4 4z'],
     ];
 @endphp
 <nav class="tabbar md:hidden" aria-label="Main">

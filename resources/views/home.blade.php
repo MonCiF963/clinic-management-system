@@ -59,7 +59,7 @@
 @endphp
 
 {{-- ============ HERO ============ --}}
-<section id="top" class="snap-sec relative overflow-hidden bg-linear-to-b from-brand-50 via-white to-white">
+<section id="top" class="relative overflow-hidden bg-linear-to-b from-brand-50 via-white to-white">
     <div class="pointer-events-none absolute -top-24 -right-24 size-96 rounded-full bg-brand-200/50 blur-3xl"></div>
     <div class="pointer-events-none absolute top-40 -left-24 size-72 rounded-full bg-brand-100/60 blur-3xl"></div>
 
@@ -172,20 +172,8 @@
     </div>
 </section>
 
-{{-- ============ STATS ============ --}}
-<section id="stats" class="snap-sec border-y border-slate-200 bg-white">
-    <div class="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 py-12 sm:px-6 lg:grid-cols-4 lg:px-8">
-        @foreach ($stats as [$number, $label])
-            <div class="reveal text-center">
-                <p class="text-3xl font-extrabold text-brand-600 sm:text-4xl">{{ $number }}</p>
-                <p class="mt-1 text-sm font-medium text-slate-500">{{ $label }}</p>
-            </div>
-        @endforeach
-    </div>
-</section>
-
 {{-- ============ SERVICES ============ --}}
-<section id="services" class="snap-sec scroll-mt-20 py-20 sm:py-28">
+<section id="services" class="scroll-mt-20 py-20 sm:py-28">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="reveal mx-auto max-w-2xl text-center">
             <p class="text-sm font-semibold tracking-wider text-brand-600 uppercase">Our services</p>
@@ -210,7 +198,7 @@
 </section>
 
 {{-- ============ WHY US ============ --}}
-<section id="why-us" class="snap-sec scroll-mt-20 bg-slate-50 py-20 sm:py-28">
+<section id="why-us" class="scroll-mt-20 bg-slate-50 py-20 sm:py-28">
     <div class="mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
 
         <div class="reveal">
@@ -249,7 +237,7 @@
 </section>
 
 {{-- ============ DOCTORS ============ --}}
-<section id="doctors" class="snap-sec scroll-mt-20 py-20 sm:py-28">
+<section id="doctors" class="scroll-mt-20 py-20 sm:py-28">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="reveal mx-auto max-w-2xl text-center">
             <p class="text-sm font-semibold tracking-wider text-brand-600 uppercase">Our team</p>
@@ -279,7 +267,7 @@
 </section>
 
 {{-- ============ REVIEWS ============ --}}
-<section id="reviews" class="snap-sec scroll-mt-20 bg-brand-900 py-20 sm:py-28">
+<section id="reviews" class="scroll-mt-20 bg-brand-900 py-20 sm:py-28">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="reveal mx-auto max-w-2xl text-center">
             <p class="text-sm font-semibold tracking-wider text-brand-300 uppercase">Testimonials</p>
@@ -304,42 +292,5 @@
     </div>
 </section>
 
-{{-- ============ CONTACT ============ --}}
-<section id="contact" class="snap-sec scroll-mt-20 py-20 sm:py-28">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="reveal grid overflow-hidden rounded-3xl bg-linear-to-br from-brand-600 to-brand-800 shadow-2xl shadow-brand-900/20 {{ auth()->check() && auth()->user()->hasRole('patient') ? 'lg:grid-cols-2' : '' }}">
-
-            <div class="p-8 text-white sm:p-12">
-                <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
-                    {{ auth()->check() && auth()->user()->hasRole('patient') ? 'Book your appointment today' : 'Get in touch' }}
-                </h2>
-                <p class="mt-4 text-lg text-brand-100">
-                    {{ auth()->check() && auth()->user()->hasRole('patient') ? 'Pick a doctor and a free time. Our team will confirm your visit shortly.' : 'Call us or visit the clinic. Existing patients can sign in to manage their appointments.' }}
-                </p>
-
-                <ul class="mt-8 space-y-4 text-brand-50">
-                    <li class="flex items-center gap-3">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="size-6"><path d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/></svg>
-                        +1 (555) 010-2030
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="size-6"><path d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
-                        Sun – Thu, 08:00 – 18:00
-                    </li>
-                </ul>
-            </div>
-
-            @auth
-                @if (auth()->user()->hasRole('patient'))
-                    <div class="flex flex-col justify-center gap-5 bg-white p-8 sm:p-12">
-                        <h3 class="text-xl font-bold text-slate-900">Ready when you are</h3>
-                        <p class="text-slate-600">Choose a service, a doctor and a free time. It takes less than a minute.</p>
-                        <a href="{{ route('appointments.create') }}" class="btn-shine rounded-xl bg-brand-600 py-3.5 text-center text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition hover:bg-brand-700">Book an appointment</a>
-                    </div>
-                @endif
-            @endauth
-        </div>
-    </div>
-</section>
 
 @endsection

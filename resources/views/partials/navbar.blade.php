@@ -18,7 +18,6 @@
             <a href="{{ url('/') }}#why-us" class="transition hover:text-brand-600">Why us</a>
             <a href="{{ url('/') }}#doctors" class="transition hover:text-brand-600">Doctors</a>
             <a href="{{ url('/') }}#reviews" class="transition hover:text-brand-600">Reviews</a>
-            <a href="{{ url('/') }}#contact" class="transition hover:text-brand-600">Contact</a>
         </nav>
 
         <div class="hidden items-center gap-3 md:flex">

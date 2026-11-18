@@ -27,7 +27,6 @@
                             <li><a href="{{ route('appointments.create') }}" class="hover:text-white">Book appointment</a></li>
                         @endif
                     @endauth
-                    <li><a href="{{ url('/') }}#contact" class="hover:text-white">Contact</a></li>
                 </ul>
             </div>
 
