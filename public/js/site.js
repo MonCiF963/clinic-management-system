@@ -72,7 +72,7 @@
 (() => {
   const tabs = [...document.querySelectorAll('.tabbar a[data-tab]')];
   if (!tabs.length || !document.getElementById('services')) return;
-  const map = { top: 'home', services: 'services', 'why-us': 'services', doctors: 'doctors', reviews: 'doctors', contact: 'contact' };
+  const map = { top: 'home', services: 'services', 'why-us': 'services', doctors: 'doctors', reviews: 'doctors' };
   const set = (id) => tabs.forEach((t) => t.classList.toggle('on', t.dataset.tab === map[id]));
   set('top');
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) set(e.target.id); }), { rootMargin: '-45% 0px -50% 0px' });
