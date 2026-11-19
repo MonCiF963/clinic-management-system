@@ -38,29 +38,12 @@
             @endauth
         </div>
 
-        {{-- Phone: menu button, opens the same links/buttons as the desktop bar --}}
-        <button type="button" id="menu-btn" class="menu-btn md:hidden" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path class="l1" d="M4 7h16"/><path class="l2" d="M4 12h16"/><path class="l3" d="M4 17h16"/></svg>
-        </button>
-    </div>
-
-    <div id="mobile-menu" class="mobile-menu md:hidden" hidden>
-        <nav class="mm-links">
-            <a href="{{ url('/') }}#top">Home</a>
-            <a href="{{ url('/') }}#services">Services</a>
-            <a href="{{ url('/') }}#why-us">Why us</a>
-            <a href="{{ url('/') }}#doctors">Doctors</a>
-            <a href="{{ url('/') }}#reviews">Reviews</a>
-        </nav>
-        <div class="mm-actions">
+        {{-- Phone: one clear action; navigation lives in the bottom tab bar --}}
+        <div class="md:hidden">
             @auth
-                <a href="{{ route('dashboard') }}" class="mm-ghost">Dashboard</a>
-                @if (auth()->user()->hasRole('patient'))
-                    <a href="{{ route('appointments.create') }}" class="mm-primary bg-brand-600 btn-shine">Book appointment</a>
-                @endif
+                <a href="{{ route('dashboard') }}" class="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white">Dashboard</a>
             @else
-                <a href="{{ route('login') }}" class="mm-ghost">Sign in</a>
-                <a href="{{ route('register') }}" class="mm-ghost">Sign up</a>
+                <a href="{{ route('login') }}" class="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white">Sign in</a>
             @endauth
         </div>
     </div>

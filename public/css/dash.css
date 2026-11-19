@@ -43,13 +43,6 @@ body.dash header.top a:hover{color:var(--ac)!important}
 body.dash header.top button{height:44px;padding:0 18px!important;border-radius:99px;font-weight:500;background:rgba(255,255,255,.06);border:1px solid var(--line)!important;color:#d5e8e4!important;transition:all .3s}
 body.dash header.top button:hover{color:#fff!important;border-color:rgba(255,107,112,.55)!important;background:rgba(255,107,112,.14);box-shadow:0 0 24px rgba(255,107,112,.22)}
 .show-sm{display:none}
-.menu-btn{display:none;align-items:center;justify-content:center;width:42px;height:42px;flex:none;margin-right:10px;border-radius:14px;color:#e6f4f1;background:rgba(255,255,255,.06);border:1px solid var(--line);cursor:pointer;transition:background .25s,transform .2s}
-.menu-btn:active{transform:scale(.94)}
-.menu-btn svg{width:22px;height:22px}
-.menu-btn path{transition:transform .3s var(--ease),opacity .2s;transform-origin:center;transform-box:fill-box}
-.menu-btn[aria-expanded="true"] .l1{transform:translateY(5px) rotate(45deg)}
-.menu-btn[aria-expanded="true"] .l2{opacity:0}
-.menu-btn[aria-expanded="true"] .l3{transform:translateY(-5px) rotate(-45deg)}
 .brand-dot{width:34px;height:34px;border-radius:12px;background:linear-gradient(145deg,#0d9488,#0f766e);color:#fff;align-items:center;justify-content:center;margin-right:10px;flex:none;box-shadow:0 0 18px rgba(20,184,166,.5)}
 .brand-dot svg{width:16px;height:16px}
 
@@ -117,17 +110,12 @@ body.dash .btn-busy{position:relative;color:transparent!important}
 body.dash .btn-busy::after{content:"";position:absolute;inset:0;margin:auto;width:16px;height:16px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 body.dash a,body.dash button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.tabbar{display:none}
 
 /* ================= PHONE ================= */
 @media (max-width:1023px){
-  body.dash{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
-  /* the sidebar becomes a drawer that slides in from the left */
-  body.dash aside{display:flex!important;left:0;top:0;bottom:0;width:min(82vw,300px);border-radius:0 30px 30px 0;padding-top:calc(22px + env(safe-area-inset-top));transform:translateX(-105%);transition:transform .38s var(--ease);z-index:300;background:rgba(7,20,18,.96);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);overflow-y:auto}
-  body.dash.nav-open aside{transform:none;box-shadow:24px 0 60px rgba(0,0,0,.55)}
-  #nav-backdrop{position:fixed;inset:0;z-index:250;background:rgba(2,8,7,.6);opacity:0;pointer-events:none;transition:opacity .3s}
-  body.dash.nav-open #nav-backdrop{opacity:1;pointer-events:auto}
-  body.dash.nav-open{overflow:hidden}
-  body.dash aside nav a{padding:14px 16px!important}
+  body.dash{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+  body.dash aside{display:none!important}
   .hide-sm{display:none!important}
   .show-sm{display:inline-flex}
   body.dash header.top{padding:14px 16px 10px!important}
@@ -136,6 +124,15 @@ body.dash a,body.dash button{-webkit-tap-highlight-color:transparent;touch-actio
   body.dash .ava{width:38px;height:38px;font-size:.9rem}
   body.dash header.top button{height:38px;padding:0 14px!important;font-size:13px}
   body.dash main{padding:4px 16px 24px!important}
+  /* floating glass tab bar */
+  .tabbar{display:flex;position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:100;gap:4px;padding:8px;border-radius:28px;
+    background:var(--glass);background-color:rgba(8,22,20,.7);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid var(--line);box-shadow:0 14px 34px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.14)}
+  .tabbar{overflow-x:auto;scrollbar-width:none}.tabbar::-webkit-scrollbar{display:none}
+  .tabbar a{flex:1 0 66px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px;border-radius:99px;color:var(--mut);font-size:10.5px;font-weight:500;text-decoration:none;min-width:0;transition:background .3s,color .3s}
+  .tabbar a span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .tabbar svg{width:21px;height:21px}
+  .tabbar a.on{color:#fff;background:linear-gradient(90deg,var(--ac2),var(--ac3));box-shadow:0 8px 20px rgba(20,184,166,.5),inset 0 1px 0 rgba(255,255,255,.35)}
+  .tabbar a:active{transform:scale(.94)}
   body.dash .gcard:hover{transform:none}
   body.dash main input:not([type=checkbox]):not([type=radio]),body.dash main select,body.dash main textarea{font-size:16px!important}
   body.dash main a.rounded-full,body.dash main button,body.dash main a.rounded-xl{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
@@ -155,4 +152,5 @@ body.dash a,body.dash button{-webkit-tap-highlight-color:transparent;touch-actio
   body.dash main table.rtable tbody tr:hover td:first-child{box-shadow:none}
   body.dash main .overflow-x-auto{overflow:visible}
 }
+@media (max-width:380px){.tabbar a{font-size:9.5px}.tabbar svg{width:19px;height:19px}}
 @media (prefers-reduced-motion:reduce){body.dash .in,body.dash main tbody tr{animation:none;opacity:1;transform:none}}
