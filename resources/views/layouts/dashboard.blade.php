@@ -56,7 +56,7 @@
 <div class="shell flex min-h-screen">
 
     {{-- Sidebar --}}
-    <aside class="hidden w-64 shrink-0 flex-col lg:flex">
+    <aside id="drawer" class="hidden w-64 shrink-0 flex-col lg:flex">
         <a href="{{ route('home') }}" class="flex h-16 items-center gap-2.5 px-6">
             <span class="flex size-9 items-center justify-center rounded-xl bg-brand-600 text-white">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="size-5"><path d="M12 5v14M5 12h14" /></svg>
@@ -98,7 +98,7 @@
     <div class="flex min-w-0 flex-1 flex-col">
         {{-- Top bar --}}
         <header class="top flex h-16 items-center justify-between border-b px-4 sm:px-8">
-            <a href="{{ route('home') }}" data-full class="show-sm brand-dot" aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></a>
+            <button type="button" id="nav-toggle" class="show-sm menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path class="l1" d="M4 7h16"/><path class="l2" d="M4 12h16"/><path class="l3" d="M4 17h16"/></svg></button>
             <h1 id="page-title" class="text-lg font-semibold">@yield('title', 'Dashboard')</h1>
 
             <div class="tr">
@@ -119,16 +119,7 @@
     </div>
 </div>
 
-{{-- Phone: bottom tab bar (separate from the desktop sidebar) --}}
-<nav class="tabbar lg:hidden" aria-label="Main">
-    @php $tabs = collect($nav)->filter(fn ($n) => $n[3] && $user->hasRole(...$n[2])); @endphp
-    @foreach ($tabs as [$label, $url])
-        <a href="{{ $url }}" data-nav class="{{ request()->url() === $url || str_starts_with(request()->url(), $url.'/') ? 'on' : '' }}">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{!! $icons[$label] ?? '' !!}</svg>
-            <span>{{ in_array($label, ['Book appointment', 'Book for patient']) ? 'Book' : $label }}</span>
-        </a>
-    @endforeach
-</nav>
+<div id="nav-backdrop" class="lg:hidden"></div>
 
 </body>
 </html>

@@ -59,8 +59,9 @@
       scrollTo(0, 0); setActive(); enhance(); prog(false);
     }, 0);
   };
+  const closeNav = () => { document.body.classList.remove('nav-open'); const t = $('#nav-toggle'); if (t) { t.setAttribute('aria-expanded', 'false'); t.setAttribute('aria-label', 'Open menu'); } };
   const go = (url, push = true) => {
-    prog(true);
+    prog(true); closeNav();
     // instant feedback: highlight the clicked item and dim the page right away
     const u = new URL(url, location.href).pathname;
     $$('[data-nav]').forEach((a) => a.classList.toggle('on', new URL(a.href).pathname === u));
@@ -94,6 +95,13 @@
     } catch (err) { f.setAttribute('data-full', ''); if (btn) btn.disabled = false; f.submit(); }
   });
   addEventListener('popstate', () => go(location.href, false));
+
+  /* phone drawer menu */
+  const tgl = $('#nav-toggle');
+  if (tgl) tgl.addEventListener('click', () => { const o = !document.body.classList.contains('nav-open'); document.body.classList.toggle('nav-open', o); tgl.setAttribute('aria-expanded', o ? 'true' : 'false'); tgl.setAttribute('aria-label', o ? 'Close menu' : 'Open menu'); });
+  const bd = $('#nav-backdrop'); if (bd) bd.addEventListener('click', closeNav);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeNav(); });
+  addEventListener('resize', () => { if (innerWidth >= 1024) closeNav(); });
 
   setActive(); enhance();
 })();
