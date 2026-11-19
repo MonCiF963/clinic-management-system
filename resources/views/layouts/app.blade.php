@@ -22,6 +22,7 @@
     </main>
 
     @include('partials.footer')
+    @include('partials.tabbar')
 
     <script src="{{ asset('js/site.js') }}?v={{ filemtime(public_path('js/site.js')) }}" defer></script>
 </body>

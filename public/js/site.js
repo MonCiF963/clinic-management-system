@@ -78,14 +78,3 @@
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) set(e.target.id); }), { rootMargin: '-45% 0px -50% 0px' });
   Object.keys(map).forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
 })();
-
-/* Phone menu toggle */
-(() => {
-  const btn = document.getElementById('menu-btn'), menu = document.getElementById('mobile-menu');
-  if (!btn || !menu) return;
-  const set = (open) => { menu.hidden = !open; btn.setAttribute('aria-expanded', open ? 'true' : 'false'); btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); };
-  btn.addEventListener('click', () => set(menu.hidden));
-  menu.addEventListener('click', (e) => { if (e.target.closest('a')) set(false); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
-  addEventListener('resize', () => { if (innerWidth >= 768) set(false); });
-})();
